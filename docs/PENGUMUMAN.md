@@ -2,9 +2,11 @@
 
 > Isi bagian dalam tanda kurung siku `[...]` sebelum dikirim ke mahasiswa.
 
-**Pertemuan:** [hari, tanggal, jam, ruang]
-**Topik:** [mis. orientasi dan alat ukur / Lab 0 baseline / latihan membedah tiket]
-**Repo materi:** https://github.com/joelianmin/PasarKita
+- **Pertemuan:** Jumat, 6 November 2026, pukul 09.00-10.40 dan 13.00-16.40 WIB, **online**
+- **Tautan sesi:** [tautan Zoom/Meet/Teams]
+- **Beban belajar:** [jelaskan maksud "+ 380 menit": mis. belajar mandiri atau tugas]
+- **Topik:** [mis. orientasi dan alat ukur / Lab 0 baseline / latihan membedah tiket]
+- **Repo materi:** https://github.com/joelianmin/PasarKita
 
 ## Siapkan sebelum kelas
 
@@ -14,7 +16,7 @@
    jalankan `wsl --shutdown`. Docker Desktop terbaru di macOS membutuhkan macOS 14 atau lebih
    baru; kalau macOS-mu lebih lama, hubungi pengajar sebelum kelas.
 3. **Unduh dependensi dan image di rumah.** Setelah repo di-clone, jalankan `task warmup`.
-   Unduhannya besar dan wifi kelas tidak akan cukup kalau semua orang mengunduh bersamaan.
+   Unduhannya besar. Jangan menunggu sesi dimulai, dan jangan mengunduh sambil berbagi layar.
 4. **Periksa lingkungan:** `task doctor`. Semua baris harus `OK`. Kirim keluaran yang gagal ke
    pengajar sebelum kelas, bukan saat kelas.
 5. **Sisakan ruang disk yang lega.** Data lab dan image Docker memakan beberapa GB; data skala M
@@ -24,8 +26,10 @@
    kelompok dan akun pengajar [akun GitHub pengajar].
 7. **Baca materi.** Minimal `docs/MATERI-DASAR.md`, lalu bagian 1.1 dan 2. Pertanyaan
    "cek diri" di akhir tiap topik adalah cara menguji pemahamanmu.
-8. **Bawa laptop dengan baterai penuh dan charger.** Pengukuran paling baik dilakukan saat
-   laptop tercolok.
+8. **Siapkan laptop dengan baterai penuh dan charger.** Sesi berlangsung berjam-jam, dan
+   pengukuran paling baik dilakukan saat laptop tercolok.
+9. **Siapkan untuk sesi online:** koneksi stabil, headset, dan kemampuan berbagi layar
+   (termasuk izin yang dibutuhkan sistem operasimu). Uji sebelum sesi, bukan saat sesi.
 
 ## Aturan main
 
@@ -35,7 +39,9 @@
   **jangan diubah setelah itu**.
 - **Commit dulu, baru `task evidence`.** File bukti dilampirkan ke pull request, tidak
   di-commit.
-- Saat mengukur, tutup aplikasi berat lain dan jangan menjalankan hal lain di laptop.
+- Saat mengukur, tutup aplikasi berat lain dan jangan menjalankan hal lain di laptop. Berbagi
+  layar dan video call memakai CPU, jadi matikan kamera dan tutup aplikasi rapat tambahan saat
+  run pengukuran berlangsung, lalu catat bahwa sesi online berjalan.
 - Repo kelompok harus **privat**.
 
 ## Kalau macet
@@ -43,7 +49,7 @@
 1. Buka `docs/MATERI-DASAR.md`, tabel **"Cari berdasarkan masalah"**.
 2. Ikuti metode diagnosa di `docs/materi/06-diagnosa-dan-latihan.md`, bagian 6.1: baca pesan
    error sampai habis, cari lapisan yang pertama tidak sehat, catat buktinya.
-3. Saat bertanya, sertakan: pesan error persis, keluaran `task doctor`, langkah yang kamu
+3. Saat bertanya (atau berbagi layar), sertakan: pesan error persis, keluaran `task doctor`, langkah yang kamu
    lakukan, dan apa yang sudah kamu coba. "Tidak jalan" saja tidak bisa dibantu.
 
 ## Tidak bisa memakai Docker?
