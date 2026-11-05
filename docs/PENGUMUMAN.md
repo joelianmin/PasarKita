@@ -23,7 +23,7 @@
    untuk Lab 0 lebih besar lagi.
 6. **Siapkan akun GitHub.** Satu anggota tiap kelompok membuat repo kelompok dari templat
    (lihat `docs/materi/07-menyerahkan-hasil.md`, bagian 7.1): pilih **Private**, undang anggota
-   kelompok dan akun pengajar [akun GitHub pengajar].
+   kelompok dan akun pengajar (`joelianmin`).
 7. **Baca materi.** Minimal `docs/MATERI-DASAR.md`, lalu bagian 1.1 dan 2. Pertanyaan
    "cek diri" di akhir tiap topik adalah cara menguji pemahamanmu.
 8. **Siapkan laptop dengan baterai penuh dan charger.** Sesi berlangsung berjam-jam, dan
@@ -59,4 +59,4 @@ diuji di macOS, dan `task test` tidak berjalan di jalur itu.
 
 ## Kontak
 
-[kanal komunikasi kelas, mis. grup, email, atau jam konsultasi]
+Group WA Kelas.
