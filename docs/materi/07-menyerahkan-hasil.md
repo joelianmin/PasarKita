@@ -126,10 +126,15 @@ dan tabel baseline.
   file bukti mencantumkan "ADA (bukti tidak sah untuk penilaian)".
 - Folder `labs/*/out/` diabaikan Git (kecuali `.gitkeep`), jadi file bukti **tidak ikut
   commit**. Lampirkan secara manual ke PR (misalnya diunggah di deskripsi atau komentar).
-- Bukti bergantung pada hasil k6 terakhir. Jangan menjalankan `task reproduce` lagi setelah
-  run pengukuran terbaikmu kalau belum membuat buktinya.
-- Urutan yang benar: ukur, tulis `BASELINE.md`, `git add` dan `git commit`, **lalu**
-  `task evidence LAB=0`, lampirkan, buka PR.
+- Bukti bergantung pada hasil k6 terakhir (`summary.json`). Jangan menjalankan
+  `task reproduce` lagi setelah run pengukuran terbaikmu kalau belum membuat buktinya.
+- **Aturan intinya: angka diukur pada kode yang sama dengan commit yang dibuktikan.**
+  - **Lab 0** (tidak ada perubahan kode): ukur, tulis `BASELINE.md`, `git add` dan
+    `git commit`, **lalu** `task evidence LAB=0`, lampirkan, buka PR. Aman, karena commit
+    hanya menambah dokumen.
+  - **Lab berikutnya** (kode berubah): commit perubahan kode dulu, **lalu**
+    `task reproduce`, **lalu** `task evidence`. Jika alat bukti memperingatkan ada perubahan
+    yang belum di-commit, ikuti pesannya: commit, ulangi `reproduce`, lalu `evidence`.
 - Jangan memperbaiki apa pun di Lab 0. Tugasnya mencatat kondisi awal.
 
 ---
