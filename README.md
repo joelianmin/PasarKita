@@ -45,6 +45,8 @@ mengukur, mutu dan desain, diagnosa dan latihan, menyerahkan hasil) beserta refe
 Akun contoh: `user1@pasarkita.test` sampai `userN@pasarkita.test`, password `rahasia123`.
 Endpoint keranjang dan checkout memakai header `X-Customer-Id`.
 
+Petunjuk lab ada di [`labs/README.md`](labs/README.md).
+
 ## Modul
 
 catalog, customer, order, pricing, inventory, payment, invoice, loyalty, notification,
