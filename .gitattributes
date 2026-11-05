@@ -1,0 +1,7 @@
+# Akhir baris LF untuk semua file teks, kecuali script Windows.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.jar binary
+*.jfr binary
+*.png binary

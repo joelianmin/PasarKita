@@ -1,0 +1,76 @@
+name: pasarkita
+
+services:
+  postgres:
+    image: postgres:16
+    profiles: [core]
+    environment:
+      POSTGRES_DB: pasarkita
+      POSTGRES_USER: pasarkita
+      POSTGRES_PASSWORD: pasarkita
+    command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements", "-c", "pg_stat_statements.track=all"]
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ../seed:/seed:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pasarkita -d pasarkita"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  flyway:
+    image: flyway/flyway:10.20.1
+    profiles: [tools]
+    command: migrate
+    environment:
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/pasarkita
+      FLYWAY_USER: pasarkita
+      FLYWAY_PASSWORD: pasarkita
+      FLYWAY_LOCATIONS: filesystem:/flyway/sql
+    volumes:
+      - ../../src/main/resources/db/migration:/flyway/sql:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  wiremock:
+    image: wiremock/wiremock:3.9.1
+    profiles: [core]
+    ports: ["8089:8080"]
+    volumes:
+      - ./wiremock/mappings:/home/wiremock/mappings:ro
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    profiles: [core]
+    ports: ["9090:9090"]
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    profiles: [core]
+    ports: ["3000:3000"]
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+
+  tempo:
+    image: grafana/tempo:2.6.1
+    profiles: [observability]
+    user: "0"
+    command: ["-config.file=/etc/tempo.yaml"]
+    ports: ["3200:3200", "4318:4318"]
+    volumes:
+      - ./tempo/tempo.yaml:/etc/tempo.yaml:ro
+
+volumes:
+  pgdata:

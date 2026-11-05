@@ -1,0 +1,9 @@
+{
+  "request": { "method": "GET", "urlPath": "/tax/rate" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": { "rate": 0.11 },
+    "fixedDelayMilliseconds": 40
+  }
+}

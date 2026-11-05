@@ -1,0 +1,9 @@
+# Versi tanpa Docker: aplikasi berjalan di mesin yang sama, jadi targetnya localhost.
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: pasarkita
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ['localhost:8080']

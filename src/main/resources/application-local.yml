@@ -1,0 +1,12 @@
+# Profil lokal. Aktifkan baris di bawah saat workshop alat ukur (sesi 3).
+# Jangan aktifkan di production: log parameter bisa berisi data pribadi.
+#
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.orm.jdbc.bind: TRACE
+#spring:
+#  jpa:
+#    properties:
+#      hibernate:
+#        generate_statistics: true

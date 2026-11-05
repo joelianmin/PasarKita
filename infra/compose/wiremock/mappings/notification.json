@@ -1,0 +1,7 @@
+{
+  "request": { "method": "POST", "urlPath": "/notifications/send" },
+  "response": {
+    "status": 202,
+    "fixedDelayMilliseconds": 80
+  }
+}

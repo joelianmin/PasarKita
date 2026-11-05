@@ -1,0 +1,8 @@
+# __DASHBOARDS__ diganti oleh native.sh dengan path absolut ke infra/compose/grafana/dashboards.
+apiVersion: 1
+providers:
+  - name: pasarkita
+    folder: PasarKita
+    type: file
+    options:
+      path: __DASHBOARDS__

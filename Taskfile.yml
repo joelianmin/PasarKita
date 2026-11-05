@@ -1,0 +1,161 @@
+version: '3'
+
+dotenv: ['group.env']
+
+vars:
+  MVNW: '{{if eq OS "windows"}}./mvnw.cmd{{else}}./mvnw{{end}}'
+  COMPOSE: docker compose -f infra/compose/compose.yaml
+  BASE_URL: http://localhost:8080
+  ALL_PROFILES: core,observability,tools
+
+tasks:
+  default:
+    cmds:
+      - task --list
+    silent: true
+
+  doctor:
+    desc: Periksa versi alat, memori Docker, dan port
+    cmds:
+      - java tools/Doctor.java
+
+  warmup:
+    desc: Unduh dependensi Maven dan image Docker (jalankan sebelum kelas)
+    env:
+      COMPOSE_PROFILES: '{{.ALL_PROFILES}}'
+    cmds:
+      - '{{.MVNW}} -q -DskipTests dependency:go-offline'
+      - '{{.COMPOSE}} pull'
+
+  up:
+    desc: Nyalakan infrastruktur, contoh PROFILE=core,observability
+    env:
+      COMPOSE_PROFILES: '{{.PROFILE | default "core,observability"}}'
+    cmds:
+      - '{{.COMPOSE}} up -d --wait'
+
+  down:
+    desc: Matikan infrastruktur (data database tetap tersimpan)
+    env:
+      COMPOSE_PROFILES: '{{.ALL_PROFILES}}'
+    cmds:
+      - '{{.COMPOSE}} down'
+
+  reset:
+    desc: Matikan infrastruktur dan HAPUS semua data database
+    prompt: Semua data database akan dihapus. Lanjutkan?
+    env:
+      COMPOSE_PROFILES: '{{.ALL_PROFILES}}'
+    cmds:
+      - '{{.COMPOSE}} down -v'
+
+  migrate:
+    desc: Jalankan migrasi skema database (Flyway)
+    env:
+      COMPOSE_PROFILES: core,tools
+    cmds:
+      - '{{.COMPOSE}} run --rm flyway'
+
+  seed:
+    desc: Isi data contoh, contoh SCALE=S atau SCALE=M
+    vars:
+      SCALE: '{{.SCALE | default "S"}}'
+      SELLERS: '{{if eq .SCALE "M"}}2000{{else}}200{{end}}'
+      PRODUCTS: '{{if eq .SCALE "M"}}50000{{else}}5000{{end}}'
+      CUSTOMERS: '{{if eq .SCALE "M"}}200000{{else}}10000{{end}}'
+      ORDERS: '{{if eq .SCALE "M"}}1000000{{else}}50000{{end}}'
+    cmds:
+      - task: migrate
+      - '{{.COMPOSE}} exec -T postgres psql -U pasarkita -d pasarkita -v ON_ERROR_STOP=1 -v seed=$GROUP_SEED -v sellers={{.SELLERS}} -v products={{.PRODUCTS}} -v customers={{.CUSTOMERS}} -v orders={{.ORDERS}} -f /seed/seed.sql'
+
+  app:
+    desc: Jalankan aplikasi dengan profil local di port 8080
+    cmds:
+      - '{{.MVNW}} spring-boot:run -Dspring-boot.run.profiles=local'
+
+  test:
+    desc: Jalankan test fungsional
+    cmds:
+      - '{{.MVNW}} test'
+
+  modules:
+    desc: Verifikasi struktur modul Spring Modulith dan buat dokumentasinya
+    cmds:
+      - '{{.MVNW}} test -Dtest=ModularityTests -Dexcluded.groups= -Dsurefire.failIfNoSpecifiedTests=false'
+
+  psql:
+    desc: Buka psql ke database PasarKita (untuk EXPLAIN dan pg_stat_statements)
+    interactive: true
+    cmds:
+      - '{{.COMPOSE}} exec postgres psql -U pasarkita -d pasarkita'
+
+  lab:
+    desc: Siapkan lingkungan untuk satu lab, contoh LAB=0
+    requires:
+      vars: [LAB]
+    cmds:
+      - task: up
+        vars:
+          PROFILE: core,observability
+      - task: seed
+        vars:
+          SCALE: '{{if eq .LAB "0"}}M{{else}}S{{end}}'
+
+  reproduce:
+    desc: Jalankan script beban satu lab, contoh LAB=0
+    requires:
+      vars: [LAB]
+    cmds:
+      - k6 run -e BASE_URL={{.BASE_URL}} -e OUT=labs/{{.LAB}}/out labs/{{.LAB}}/reproduce.k6.js
+
+  evidence:
+    desc: Buat file bukti dengan hash dari hasil reproduce terakhir, contoh LAB=0
+    requires:
+      vars: [LAB]
+    cmds:
+      - java tools/Evidence.java {{.LAB}}
+
+  traffic:
+    desc: Simulator traffic lokal (pengganti production simulasi), DURATION default 8h
+    cmds:
+      - k6 run -e BASE_URL={{.BASE_URL}} -e DURATION={{.DURATION | default "8h"}} traffic/simulator.k6.js
+
+  flag:
+    desc: Nyalakan atau matikan feature flag, contoh NAME=seller.dynamic-thumbnail ON=true
+    requires:
+      vars: [NAME, ON]
+    cmds:
+      - '{{.COMPOSE}} exec -T postgres psql -U pasarkita -d pasarkita -c "UPDATE feature_flag SET enabled = {{.ON}} WHERE name = ''{{.NAME}}''"'
+
+  # --- Tanpa Docker (untuk Mac yang tidak bisa memakai Docker Desktop). Lihat infra/native/README.md ---
+  native:up:
+    desc: Nyalakan PostgreSQL, WireMock, Prometheus, Grafana, Tempo tanpa Docker
+    cmds:
+      - infra/native/native.sh up {{.PROFILE | default "core,observability"}}
+
+  native:down:
+    desc: Matikan komponen tanpa Docker (data tetap tersimpan)
+    cmds:
+      - infra/native/native.sh down
+
+  native:status:
+    desc: Lihat komponen tanpa Docker yang sedang berjalan
+    cmds:
+      - infra/native/native.sh status
+
+  native:seed:
+    desc: Migrasi dan isi data contoh tanpa Docker, contoh SCALE=S atau SCALE=M
+    cmds:
+      - infra/native/native.sh seed {{.SCALE | default "S"}}
+
+  native:psql:
+    desc: Buka psql ke database PasarKita tanpa Docker
+    interactive: true
+    cmds:
+      - infra/native/native.sh psql
+
+  native:reset:
+    desc: Matikan komponen tanpa Docker dan HAPUS semua datanya
+    prompt: Semua data database dan metrik akan dihapus. Lanjutkan?
+    cmds:
+      - infra/native/native.sh reset
