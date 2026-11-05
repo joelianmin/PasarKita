@@ -1,11 +1,9 @@
 # Pengumuman: persiapan perkuliahan PasarKita
 
-> Isi bagian dalam tanda kurung siku `[...]` sebelum dikirim ke mahasiswa.
-
 - **Pertemuan:** Jumat, 6 November 2026, pukul 09.00-10.40 dan 13.00-16.40 WIB, **online**
-- **Tautan sesi:** [tautan Zoom/Meet/Teams]
-- **Beban belajar:** [jelaskan maksud "+ 380 menit": mis. belajar mandiri atau tugas]
-- **Topik:** [mis. orientasi dan alat ukur / Lab 0 baseline / latihan membedah tiket]
+- **Tautan sesi:** N/A
+- **Beban belajar:** + 380 menit belajar mandiri
+- **Topik:** Backend-1
 - **Repo materi:** https://github.com/joelianmin/PasarKita
 
 ## Siapkan sebelum kelas
