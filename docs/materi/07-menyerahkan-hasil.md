@@ -5,13 +5,68 @@
 > **Tujuan.** Mengemas hasil Lab 0 menjadi pull request dengan bukti yang sah dan catatan baseline yang bisa diperiksa orang lain.  
 > **Prasyarat.** Bagian 4 (hasil pengukuran) dan 6.1 (jika perlu mendiagnosa sebelum mengumpulkan).  
 > **Setelah bagian ini kamu bisa:**
+> - membuat repo kelompok dari templat dan mengundang anggota serta pengajar
 > - memakai Git untuk cabang, commit, dan pull request
 > - membuat file bukti yang sah dengan urutan yang benar
 > - menulis `BASELINE.md` dengan temuan yang dipisahkan dari tafsiran
 
 ---
 
-## 7.1 Git yang dipakai di lab
+## 7.1 Membuat repo kelompok
+
+Hasil lab dikumpulkan di **repo milik kelompokmu**, bukan di repo pengajar. Repo ini dibuat
+dari repo templat PasarKita, sehingga isinya sama tetapi terpisah dan bisa dibuat privat.
+
+Satu anggota membuat repo, anggota lain diundang.
+
+1. Buka halaman templat di GitHub (tautannya diberikan pengajar) dan klik
+   **Use this template**, lalu **Create a new repository**.
+2. Pilih pemilik (akun salah satu anggota) dan beri nama, misalnya
+   `pasarkita-kelompok-<nomor>`. Pilih **Private**. Repo publik membuat `BASELINE.md` dan
+   hasil kelompokmu bisa dibaca kelompok lain.
+3. Undang anggota kelompok **dan pengajar** sebagai *collaborator* dengan hak tulis:
+   *Settings*, *Collaborators*, *Add people*. Akun pengajar diberikan di kelas.
+4. Clone repo ke laptopmu:
+
+   ```bash
+   git clone git@github.com:<akun>/pasarkita-kelompok-<nomor>.git
+   cd pasarkita-kelompok-<nomor>
+   ```
+
+5. Isi seed kelompok di `group.env` dengan nilai dari pengajar, lalu commit sebagai commit
+   pertama kelompok:
+
+   ```bash
+   # ubah baris GROUP_SEED=... di group.env
+   git add group.env
+   git commit -m "Isi GROUP_SEED kelompok"
+   git push
+   ```
+
+6. Kerjakan tiap lab di **cabang sendiri** (misalnya `lab0`) dan buka PR dari cabang itu ke
+   `main` **di repo kelompokmu**. Alurnya ada di 7.3.
+
+Dengan GitHub CLI, langkah 1 sampai 4 menjadi satu perintah:
+
+```bash
+gh repo create <akun>/pasarkita-kelompok-<nomor> --template <akun-pengajar>/PasarKita --private --clone
+```
+
+**Hal yang perlu diperhatikan**
+
+- **Jangan mengubah `GROUP_SEED` setelah commit pertama.** Hash bukti memuat seed ini, jadi
+  mengubahnya membuat bukti yang sudah ada tidak cocok lagi dengan data yang kamu ukur.
+- **Templat tidak terhubung ke repo asalnya.** Jika pengajar mengumumkan pembaruan, salin
+  berkas yang berubah ke repo kelompokmu, lalu commit.
+- **File bukti tidak ikut commit** (`labs/*/out/` diabaikan Git). Lampirkan ke PR, lihat 7.4.
+- Pengajar menyimpan daftar seed tiap kelompok. Pakai seed yang diberikan, bukan buatan sendiri.
+
+> Cek diri: kenapa repo kelompok dibuat privat, dan apa yang terjadi pada bukti bila seed
+> diubah setelah pengukuran?
+
+---
+
+## 7.2 Git yang dipakai di lab
 
 Git menyimpan riwayat perubahan sebagai deretan **commit**. Tiga area yang perlu kamu
 bedakan: *working tree* (file yang kamu edit), *staging* (perubahan yang akan masuk commit
@@ -47,7 +102,7 @@ Kebiasaan yang baik:
 
 ---
 
-## 7.2 Alur kerja dengan pull request (PR)
+## 7.3 Alur kerja dengan pull request (PR)
 
 1. Pastikan cabang utama bersih dan terbaru, lalu buat cabang baru dari sana.
 2. Kerjakan dan commit bertahap.
@@ -63,7 +118,7 @@ dan tabel baseline.
 
 ---
 
-## 7.3 Bukti dengan hash
+## 7.4 Bukti dengan hash
 
 - `task evidence LAB=0` membuat file bukti di `labs/0/out/` berisi hash SHA-256 yang
   mengikat: nomor lab, commit, `GROUP_SEED`, waktu, dan isi `summary.json`.
@@ -79,7 +134,7 @@ dan tabel baseline.
 
 ---
 
-## 7.4 Menulis BASELINE.md
+## 7.5 Menulis BASELINE.md
 
 `BASELINE.md` di root repo adalah catatan kondisi awal sistem, pembanding semua perbaikan
 di minggu 2–6. Pakai template dari materi minggu 1 jika ada; kerangka di bawah adalah

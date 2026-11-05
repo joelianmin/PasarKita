@@ -63,10 +63,11 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 
 **[Bagian 7: Menyerahkan hasil](materi/07-menyerahkan-hasil.md)**
 
-- 7.1 Git yang dipakai di lab
-- 7.2 Alur kerja dengan pull request
-- 7.3 Bukti dengan hash
-- 7.4 Menulis BASELINE.md
+- 7.1 Membuat repo kelompok
+- 7.2 Git yang dipakai di lab
+- 7.3 Alur kerja dengan pull request
+- 7.4 Bukti dengan hash
+- 7.5 Menulis BASELINE.md
 
 **[Referensi](materi/referensi.md)**
 
@@ -78,9 +79,9 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 
 | Situasi | Baca |
 | --- | --- |
-| Hari pertama: menyiapkan laptop | 2.1, 2.2, 2.3 atau 2.4, 2.5, 2.6. Sambil menunggu unduhan: 1.1 |
+| Hari pertama: menyiapkan laptop dan repo kelompok | 7.1, 2.1, 2.2, 2.3 atau 2.4, 2.5, 2.6. Sambil menunggu unduhan: 1.1 |
 | Sebelum Lab 0 | 1.1, 1.2, 3.1, 3.2, 4.1, 4.2 |
-| Saat mengerjakan Lab 0 | 4.2 (cara menjalankan), 6.1 jika macet, 7.1 sampai 7.4 untuk mengumpulkan |
+| Saat mengerjakan Lab 0 | 4.2 (cara menjalankan), 6.1 jika macet, 7.1 sampai 7.5 untuk menyiapkan repo dan mengumpulkan |
 | Setelah Lab 0, minggu 2 sampai 6 | 5.1, 5.2, 5.3, lalu 6.2 untuk latihan |
 
 ## Cari berdasarkan masalah
@@ -96,7 +97,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 | Grafana kosong | 4.1, 6.1.5 |
 | Tidak paham sebuah istilah | R.2 |
 | Ingin tahu kode mana yang mengurus sesuatu | R.1 |
-| Menulis `BASELINE.md` | 7.4 |
+| Menulis `BASELINE.md` | 7.5 |
 | Ingin berlatih membaca error | 6.2 |
 
 ## Dokumen terkait

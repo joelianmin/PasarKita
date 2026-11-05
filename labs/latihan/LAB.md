@@ -44,7 +44,7 @@ Laporan singkat (sekitar satu halaman) berisi:
 | Langkah berikutnya | Uji yang akan membuktikan atau menggugurkan hipotesis |
 
 Pisahkan **fakta** dari **tafsiran**. Rumus bantu di
-[bagian 7.4](../../docs/materi/07-menyerahkan-hasil.md): pengamatan, bukti, hipotesis,
+[bagian 7.5](../../docs/materi/07-menyerahkan-hasil.md): pengamatan, bukti, hipotesis,
 dampak, cara memverifikasi.
 
 ## Bantuan

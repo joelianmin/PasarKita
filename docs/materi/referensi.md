@@ -22,7 +22,7 @@
 | Layanan tiruan | `infra/compose/wiremock/mappings/*.json` |
 | Semua perintah `task` | `Taskfile.yml` |
 | Versi Maven dan dependensi proyek | `pom.xml`, `.mvn/wrapper/maven-wrapper.properties` (bila ada) |
-| Template `BASELINE.md` | Bagian 7.4 (atau materi minggu 1) |
+| Template `BASELINE.md` | Bagian 7.5 (atau materi minggu 1) |
 | Pemeriksaan lingkungan otomatis | `tools/Doctor.java` (`task doctor`) |
 | Layanan Docker, port, volume, profil | `infra/compose/compose.yaml` |
 | Diagram deployment lengkap | `docs/DEPLOYMENT.md` |
