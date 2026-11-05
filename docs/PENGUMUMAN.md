@@ -74,7 +74,7 @@ tetapi baru diuji di macOS, dan `task test` tidak berjalan di jalur itu.
 
 Group WA Kelas.
 
-## Daftar tautan (untuk disalin ke WA)
+## Daftar tautan
 
 - Repo materi: https://github.com/joelianmin/PasarKita
 - Daftar isi materi: https://github.com/joelianmin/PasarKita/blob/main/docs/MATERI-DASAR.md
