@@ -36,6 +36,7 @@ Dugaan boleh ditulis, tetapi beri tanda.
 
 ## Catatan
 
+- Kapan harus push, dan cara agar commit-mu tertaut ke akunmu: [panduan push](PANDUAN-PUSH.md).
 - Pada Lab 0 dan latihan membedah tiket, tugasnya mengukur dan mencatat. Jangan memperbaiki
   kode.
 - Jangan menulis `GROUP_SEED` di Issue, komentar, PR, atau pesan commit.
