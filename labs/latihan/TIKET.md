@@ -130,8 +130,8 @@ Keluhan: dukungan menemukan beberapa isi keranjang yang tidak masuk akal. Belum 
 luas dan bagaimana bisa terjadi.
 Yang kami tahu: tidak ada error di sisi pelanggan.
 Yang diminta: tunjukkan bagaimana data seperti itu bisa masuk, apa dampaknya pada langkah
-berikutnya (misalnya checkout), dan buktinya. Gunakan data lab, bukan data sungguhan. Jangan
-memperbaiki apa pun.
+berikutnya (misalnya checkout), dan buktinya. Kerjakan hanya di database lab milikmu sendiri di
+laptopmu, jangan di lingkungan bersama atau milik orang lain. Jangan memperbaiki apa pun.
 
 **Tiket #4830: Beberapa input yang salah berujung error server**
 Dari: Tim Pemantauan. Prioritas: Sedang. Komponen: seluruh API.
