@@ -36,6 +36,7 @@ Dugaan boleh ditulis, tetapi beri tanda.
 
 ## Catatan
 
+- Judul PR dan bagian atas `BASELINE.md` memuat nama repo kelompok dan nama anggota yang mengerjakan. Tidak perlu nomor kelompok.
 - Kapan harus push, dan cara agar commit-mu tertaut ke akunmu: [panduan push](PANDUAN-PUSH.md).
 - Pada Lab 0 dan latihan membedah tiket, tugasnya mengukur dan mencatat. Jangan memperbaiki
   kode.

@@ -1,6 +1,9 @@
 ## Tujuan
 Lab berapa, dan apa yang dikerjakan.
 
+Judul PR memuat nama repo kelompok dan nama anggota yang mengerjakan, tanpa nomor kelompok.
+Contoh: `Lab 0: baseline - pasarkita-kelompok-xx (Nama A, Nama B)`
+
 ## Tiket
 - [ ] Issue tiket sudah ada, ber-**assignee**, dan ditautkan di sini (`Closes #nomor`)
 - [ ] Komentar progres di Issue memuat waktu dalam WIB
