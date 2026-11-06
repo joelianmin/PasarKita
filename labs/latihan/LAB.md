@@ -4,14 +4,27 @@
 adalah **memahami apa yang sebenarnya terjadi**: di lapisan mana masalahnya, apa buktinya,
 dan apa yang belum kamu ketahui. Latihan ini melatih diagnosa, bukan perbaikan.
 
-> **Teks tiket** diberikan pengajar (materi minggu 1). Tempel di sini atau di laporanmu
-> sebelum mulai, lengkap dengan waktu kejadian yang disebut di dalamnya.
+> **Teks tiket** ada di [`TIKET.md`](TIKET.md). Baca tiketmu sebelum mulai, lengkap dengan
+> waktu kejadian yang disebut di dalamnya.
 
 **Tugas.** Dari gejala pada tiket, tentukan lapisan tempat waktu atau kegagalan muncul,
 kumpulkan bukti dari lebih dari satu sumber, dan tulis hipotesismu. **Jangan memperbaiki
 apa pun.**
 
-## Langkah singkat
+## Tiket pemanasan dan tiket tambahan
+
+- **Tiket pemanasan (#4821)** dikerjakan oleh **semua anggota** untuk membiasakan alur ini.
+- **Tiket tambahan (#4822 sampai #4831, 10 tiket)**: kelompok beranggota *N* mengerjakan
+  **minimal *N* tiket**, tiap anggota paling sedikit satu, boleh lebih (undi atau pilih).
+  Teksnya ada di [`TIKET.md`](TIKET.md).
+- Daftarkan tiap tiket sebagai Issue (templat "Tiket kerja") dengan penanggung jawab. Tiap
+  anggota menulis laporannya sendiri di `labs/latihan/LAPORAN-<nomor tiket>.md`.
+- Tiket tambahan memakai data **skala M** seperti Lab 0 (`task lab LAB=0`), karena sebagian
+  gejalanya baru terlihat pada data sebesar itu. Tiket #4821 memakai skala S, seperti di bawah.
+- Langkah 3 (`task latihan:mulai`) hanya untuk tiket #4821. Tiket tambahan memakai perilaku
+  aplikasi apa adanya, jadi tidak ada kondisi yang perlu dinyalakan.
+
+## Langkah singkat (tiket #4821)
 
 1. Siapkan lingkungan dengan data skala S (`SCALE=S`), karena script beban memakai 200 penjual.
    - Dengan Docker: `task up PROFILE=core,observability` lalu `task seed SCALE=S`.
@@ -30,7 +43,7 @@ apa pun.**
    terasa tidak kuat, kurangi dengan `RATE=1` dan catat itu di laporan.
 6. Diagnosa dengan metode di [bagian 6.1](../../docs/materi/06-diagnosa-dan-latihan.md):
    persempit dari luar ke dalam (k6, metrik server, trace, query database, sumber daya).
-7. Tulis laporan di `labs/latihan/LAPORAN.md` (templat sudah tersedia), commit, dan push.
+7. Tulis laporan di `labs/latihan/LAPORAN-4821.md` (salin dari `LAPORAN.md`), commit, dan push.
    Buka PR dengan `Closes #<nomor Issue tiket>`.
 
 Setelah selesai, jalankan `task latihan:selesai` dan hentikan `task traffic`.
@@ -40,8 +53,8 @@ relevan adalah bagian dari latihan.
 
 ## Yang dikumpulkan
 
-Laporan singkat (sekitar satu halaman) berupa berkas Markdown `labs/latihan/LAPORAN.md` di
-repo kelompok. Isinya:
+Laporan singkat (sekitar satu halaman) per tiket, berupa berkas Markdown
+`labs/latihan/LAPORAN-<nomor tiket>.md` di repo kelompok (salin dari `LAPORAN.md`). Isinya:
 
 | Bagian | Isi |
 | --- | --- |

@@ -1,13 +1,13 @@
 # Laporan latihan membedah tiket
 
-> Salin ke repo kelompok dan isi di berkas ini (`labs/latihan/LAPORAN.md`). Sekitar satu halaman.
+> Salin menjadi `labs/latihan/LAPORAN-<nomor tiket>.md` di repo kelompok, satu berkas per tiket. Sekitar satu halaman.
 > Hapus petunjuk dalam tanda `>` setelah diisi. Jangan memperbaiki kode.
 
 | | |
 | --- | --- |
 | Repo kelompok | `<nama repo>` |
 | Anggota yang mengerjakan | `<nama, dan bagian masing-masing>` |
-| Tiket | `#4821`, Issue kelompok: `#<nomor>` |
+| Tiket | `#<nomor tiket pengajar>`, Issue kelompok: `#<nomor>` |
 | Kondisi dinyalakan | `<jam WIB dari task latihan:mulai>` (`<jam UTC>`) |
 | Jam tiket dilaporkan | `<jam WIB dari task latihan:mulai>` (`<jam UTC>`) |
 | Laju beban dan lingkungan | `RATE=<n>`, `<OS, Docker atau tanpa Docker, CPU, RAM>` |
