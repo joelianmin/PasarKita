@@ -30,7 +30,8 @@ apa pun.**
    terasa tidak kuat, kurangi dengan `RATE=1` dan catat itu di laporan.
 6. Diagnosa dengan metode di [bagian 6.1](../../docs/materi/06-diagnosa-dan-latihan.md):
    persempit dari luar ke dalam (k6, metrik server, trace, query database, sumber daya).
-7. Tulis laporan.
+7. Tulis laporan di `labs/latihan/LAPORAN.md` (templat sudah tersedia), commit, dan push.
+   Buka PR dengan `Closes #<nomor Issue tiket>`.
 
 Setelah selesai, jalankan `task latihan:selesai` dan hentikan `task traffic`.
 
@@ -39,7 +40,8 @@ relevan adalah bagian dari latihan.
 
 ## Yang dikumpulkan
 
-Laporan singkat (sekitar satu halaman) berisi:
+Laporan singkat (sekitar satu halaman) berupa berkas Markdown `labs/latihan/LAPORAN.md` di
+repo kelompok. Isinya:
 
 | Bagian | Isi |
 | --- | --- |
