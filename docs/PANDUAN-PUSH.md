@@ -57,7 +57,7 @@ Jejak per orang hanya terbaca kalau commit tertaut ke akun GitHub pelakunya.
 
 - **`git push --force` dan menulis ulang riwayat** (`rebase`, `reset --hard` lalu push paksa).
   Jejak kerja hilang, dan buktimu ikut hilang.
-- **Menulis `GROUP_SEED` di pesan commit,** di Issue, PR, atau komentar.
+- **Membagikan `GROUP_SEED` di luar kelompok** (grup WA kelas, repo publik, tangkapan layar yang dibagikan). Di repo privat kelompok boleh.
 - **Meng-commit file bukti** (`task evidence`). Lampirkan ke PR.
 - **Mengerjakan semuanya lalu push sekali di akhir.** Itu menghilangkan kesempatan dibantu.
 

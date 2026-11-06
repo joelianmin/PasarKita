@@ -9,7 +9,7 @@
 > - memakai Git untuk cabang, commit, dan pull request
 > - membuat file bukti yang sah dengan urutan yang benar
 > - menulis `BASELINE.md` dengan temuan yang dipisahkan dari tafsiran
-> - memahami mengapa seed tidak boleh masuk riwayat dan mengapa riwayat tidak ditimpa
+> - memahami mengapa kata sandi dan token tidak boleh masuk riwayat, dan mengapa riwayat tidak ditimpa
 
 ---
 
@@ -151,7 +151,7 @@ panduan isinya.
 
 ## 1. Identitas dan lingkungan
 - Kelompok, anggota, tanggal, commit (`git rev-parse --short HEAD`)
-- GROUP_SEED, skala data (S/M), jumlah baris order/produk/customer
+- Seed: tulis nilainya (repo kelompok privat) atau cukup "lihat `group.env` pada commit yang diukur"; skala data (S/M), jumlah baris order/produk/customer
 - Laptop: OS, CPU, RAM; memori yang dialokasikan ke Docker
 - Versi: Java, Docker, k6, PostgreSQL
 
@@ -224,30 +224,28 @@ berikutnya hanya membuat versi terbaru bersih; versi lama tetap ada dan bisa dib
 Akibatnya, apa pun yang pernah di-commit dan di-push dianggap **sudah diketahui orang yang
 punya akses ke repo**, walau sudah dihapus kemudian.
 
-### 7.6.2 Seed, kata sandi, dan token tidak boleh masuk ke tempat mana pun
+### 7.6.2 Seed itu rahasia antar kelompok; kata sandi dan token tidak boleh masuk repo
 
-`GROUP_SEED` hanya boleh ada di `group.env`. Tempat lain yang sering terlewat:
+`group.env` memang **di-commit dan di-push** ke repo kelompok. Itu disengaja, karena bukti
+(7.4) dan orang lain yang mengulang pengukuranmu perlu tahu seed yang dipakai. Jadi seed
+sudah ada di repo, dan repo kelompok yang **privat** adalah tempat yang aman untuknya.
 
-| Tempat | Contoh |
+| Hal | Aturan |
 | --- | --- |
-| Berkas dokumentasi | panduan setup yang mencontohkan `GROUP_SEED=...` |
-| `BASELINE.md` | baris "GROUP_SEED" pada identitas |
-| Pesan commit | "Change GROUP_SEED value to ..." |
-| Deskripsi PR, komentar, Issue | file bukti yang ditempel utuh |
+| Seed di `group.env`, file bukti, dan `BASELINE.md` di repo privat kelompok | Boleh. Di `BASELINE.md` tulis nilainya, atau cukup "lihat `group.env` pada commit yang diukur" |
+| Seed di grup WA kelas, repo publik, atau tangkapan layar yang dibagikan ke kelompok lain | Jangan. Seed adalah data kelompokmu |
+| Kata sandi, token, dan kunci sungguhan | **Jangan di repo mana pun,** privat sekalipun |
+| Repo kelompok | Harus **privat** dan hanya anggota serta pengajar yang diundang |
 
-Cara aman:
-- Tulis "seed kelompok" tanpa nilainya. Pengajar tahu nilainya dari `group.env`.
-- File bukti dari `task evidence` memuat seed. **Lampirkan sebagai berkas**, jangan tempel
-  isinya ke deskripsi PR.
-- Periksa sebelum commit dengan `git diff --staged`. Periksa riwayat dengan perintah di 7.6.5.
+Jika kata sandi atau token terlanjur ter-commit:
 
-Kalau sudah terlanjur:
+1. Anggap bocor. **Cabut atau ganti dulu** di layanan asalnya.
+2. Hapus dari versi terbaru lewat commit baru dan jelaskan di pesannya (tanpa menulis nilainya).
+3. Beri tahu pengajar. Menulis ulang riwayat saja tidak cukup, karena salinan lama mungkin sudah
+   ada di tempat lain.
 
-1. Hapus dari versi terbaru lewat **commit baru** dan jelaskan di pesannya (tanpa menulis nilainya).
-2. Beri tahu pengajar. Repo privat dan riwayatnya hanya terlihat oleh anggota dan pengajar,
-   jadi untuk seed praktis cukup dibiarkan.
-3. Untuk **kredensial sungguhan** (token, kata sandi), anggap bocor: cabut atau ganti dulu, baru
-   bersihkan. Menulis ulang riwayat tidak cukup, karena salinan lama mungkin sudah ada di tempat lain.
+Jika seed terlanjur terkirim ke tempat yang tidak seharusnya (grup kelas, repo publik), beri
+tahu pengajar. Seed yang tertulis di repo privat kelompokmu tidak perlu dihapus.
 
 ### 7.6.3 Mengapa `git push --force` berbahaya untuk bukti
 
@@ -264,7 +262,7 @@ Yang dilakukan sebagai gantinya:
 | Situasi | Tindakan |
 | --- | --- |
 | Salah menulis sesuatu | Commit perbaikan baru. Riwayat tetap jujur |
-| Seed terlanjur masuk | Lihat 7.6.2. Jangan tulis ulang riwayat |
+| Kata sandi atau token terlanjur masuk | Lihat 7.6.2: cabut dulu, hapus di commit baru, beri tahu pengajar. Jangan tulis ulang riwayat |
 | Sudah terlanjur force push | Beri tahu pengajar di PR, jelaskan alasannya, lalu **buat ulang bukti** dari commit terbaru |
 | Perlu merapikan commit | Tanyakan dulu. Merapikan boleh sebelum pernah di-push, bukan sesudahnya |
 
@@ -282,21 +280,19 @@ terdaftar di akunmu, commit muncul tanpa foto akun dan tidak dihitung sebagai ko
 
 ### 7.6.5 Memeriksa riwayatmu sendiri
 
-Semua perintah ini hanya membaca. Ganti `SEEDMU` dengan nilai seed kelompokmu (jangan menempel
-perintah berisi seed asli ke grup WA atau tangkapan layar).
+Semua perintah ini hanya membaca.
 
 | Pertanyaan | Perintah | Hasil yang diharapkan |
 | --- | --- | --- |
-| Seed ada di berkas selain `group.env`? | `git grep -n "SEEDMU" -- . ':!group.env'` | kosong |
-| Seed pernah ada di berkas selain `group.env`? | `git log --all -S"SEEDMU" --oneline -- . ':!group.env'` | kosong |
-| Seed ada di pesan commit? | `git log --all --grep="SEEDMU" --oneline` | kosong |
+| Token atau kunci pernah di-commit? | `git log --all -G"(ghp_|github_pat_)[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY" --oneline` | kosong |
+| Repo privat? | GitHub, Settings, General, bagian paling bawah | Private |
 | Commit tertaut ke akun? | `git log --format="%h %an <%ae>" -10` | email terdaftar di GitHub |
 | Semua sudah di-push? | `git status -sb` | tanpa kata "ahead" |
 | Ada commit yang menimpa riwayat? | `git reflog` | tidak ada `reset` atau `rebase` yang kamu tidak ingat |
 
-> Cek diri: seed tertulis di `docs/PANDUAN-SETUP.md` pada commit tiga hari lalu, dan sudah kamu
-> hapus di commit kemarin. Apakah seed masih bisa ditemukan? Langkah apa yang kamu ambil, dan apa
-> yang tidak kamu lakukan?
+> Cek diri: sebuah token tertulis di `docs/PANDUAN-SETUP.md` pada commit tiga hari lalu, dan
+> sudah kamu hapus di commit kemarin. Apakah token masih bisa ditemukan? Langkah apa yang kamu
+> ambil lebih dulu, dan apa yang tidak kamu lakukan?
 
 ---
 

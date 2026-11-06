@@ -1,7 +1,7 @@
 # Laporan latihan membedah tiket
 
 > Salin ke repo kelompok dan isi di berkas ini (`labs/latihan/LAPORAN.md`). Sekitar satu halaman.
-> Hapus petunjuk dalam tanda `>` setelah diisi. Jangan menulis `GROUP_SEED`. Jangan memperbaiki kode.
+> Hapus petunjuk dalam tanda `>` setelah diisi. Jangan memperbaiki kode.
 
 | | |
 | --- | --- |
