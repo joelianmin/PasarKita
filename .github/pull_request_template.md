@@ -1,0 +1,22 @@
+## Tujuan
+Lab berapa, dan apa yang dikerjakan.
+
+## Yang berubah
+-
+
+## Cara memeriksa
+Perintah yang dijalankan dan hasil yang diharapkan.
+
+## Bukti
+- [ ] Semua perubahan sudah di-commit **sebelum** `task evidence`
+- [ ] File bukti dilampirkan di PR ini (tidak di-commit)
+- [ ] `GROUP_SEED` sama dengan commit pertama kelompok
+
+## Mutu laporan
+- [ ] Pengamatan, bukti, dan hipotesis dipisahkan
+- [ ] Angka punya satuan dan sumber (p50, p95, p99; lebih dari satu run)
+- [ ] Keterbatasan pengukuran disebut
+- [ ] Lab 0 / latihan: tidak ada perbaikan kode
+
+## Belum selesai
+-
