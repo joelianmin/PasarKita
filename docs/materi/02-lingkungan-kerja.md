@@ -44,7 +44,7 @@ Menjalankan `test` berarti semua tahap sampai `test` ikut dijalankan.
 mengunduh Maven versi itu ke `~/.m2/wrapper`. Manfaatnya: semua orang memakai versi Maven
 yang sama tanpa memasang Maven sendiri. JDK 21 tetap diperlukan.
 
-`Taskfile.yml` memilih `./mvnw` atau `./mvnw.cmd` sesuai sistem operasi. Perintah
+`Taskfile.yml` memilih `./mvnw` atau `cmd /c mvnw.cmd` sesuai sistem operasi. Perintah
 `task app`, `task test`, `task modules`, dan `task warmup` semuanya melewatinya.
 
 **Memeriksa**
@@ -238,7 +238,8 @@ bagian 6.1 dan jangan menebak.
 | Grafana kosong | Rentang waktu salah (UTC), atau Prometheus belum menarik metrik | Ubah rentang waktu; cek http://localhost:9090/targets |
 | Target Prometheus `DOWN` | Aplikasi belum jalan | Jalankan `task app` |
 | `task test` gagal | Docker mati (Testcontainers butuh Docker) | Nyalakan Docker lalu ulangi |
-| `./mvnw` tidak ditemukan | Maven Wrapper tidak ada di repo, atau perintah `./mvnw` tidak jalan di Windows | Lihat 2.2. Jika perlu mengubah `Taskfile.yml`, ikuti 2.7: laporkan, ubah seminimal mungkin, dan catat |
+| `./mvnw` tidak ditemukan | Maven Wrapper tidak ada di repo | Lihat 2.2 |
+| Di Windows, `task app` atau `task warmup` gagal dengan pesan seperti `'.' is not recognized as an internal or external command` | Penyebabnya `./mvnw.cmd` tidak dijalankan oleh shell bawaan Task. Ambil `Taskfile.yml` terbaru dari repo materi: sejak itu memakai `cmd /c mvnw.cmd`, yang sudah dicoba di Windows 11 (CMD) dengan hasil `task app` berjalan sampai "Started ... in ...". Jika masih gagal, kirim pesan error persis lewat Issue "Macet / ada error" |
 | Docker lambat atau container mati sendiri (Windows) | Memori WSL2 terlalu kecil | Atur `.wslconfig`, lalu `wsl --shutdown` |
 | Perintah lambat sekali (Windows) | Antivirus memindai folder repo | Kecualikan folder repo dan `%UserProfile%\.m2` dari Defender |
 

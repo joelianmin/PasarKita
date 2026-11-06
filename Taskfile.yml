@@ -3,7 +3,8 @@ version: '3'
 dotenv: ['group.env']
 
 vars:
-  MVNW: '{{if eq OS "windows"}}./mvnw.cmd{{else}}./mvnw{{end}}'
+  # Di Windows, Task menjalankan perintah lewat shell bawaan yang tidak menjalankan ./mvnw.cmd; cmd /c memperbaikinya.
+  MVNW: '{{if eq OS "windows"}}cmd /c mvnw.cmd{{else}}./mvnw{{end}}'
   COMPOSE: docker compose -f infra/compose/compose.yaml
   BASE_URL: http://localhost:8080
   ALL_PROFILES: core,observability,tools
