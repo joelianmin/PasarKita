@@ -8,7 +8,7 @@ const SELLERS = Number(__ENV.SELLERS || 200);
 
 export const options = {
   scenarios: {
-    profile: { executor: 'constant-arrival-rate', rate: 5, timeUnit: '1s', duration: __ENV.DURATION || '3m', preAllocatedVUs: 20, maxVUs: 200 },
+    profile: { executor: 'constant-arrival-rate', rate: Number(__ENV.RATE || 2), timeUnit: '1s', duration: __ENV.DURATION || '3m', preAllocatedVUs: 20, maxVUs: 200 },
   },
   summaryTrendStats: ['avg', 'med', 'p(95)', 'p(99)', 'max'],
 };

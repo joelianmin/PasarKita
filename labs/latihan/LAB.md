@@ -17,15 +17,22 @@ apa pun.**
    - Dengan Docker: `task up PROFILE=core,observability` lalu `task seed SCALE=S`.
    - Tanpa Docker: `task native:up` lalu `task native:seed SCALE=S`.
 2. Jalankan aplikasi di terminal terpisah: `task app`.
-3. Pengajar menyiapkan kondisi latihan dan menyalakan traffic latar belakang
-   (`task traffic`). Tunggu sampai pengajar mengatakan siap.
+3. Jalankan `task latihan:mulai` kapan pun kelompokmu siap; tidak perlu bersamaan dengan
+   kelompok lain. Perintah itu mencetak jam kondisi dinyalakan dan jam masalah dilaporkan pada
+   tiketmu (keduanya WIB); **catat kedua jam itu**. Buka terminal lain dan jalankan traffic
+   latar belakang: `task traffic DURATION=3h`. Tunggu sekitar 10 menit sampai grafik di
+   Grafana menunjukkan perubahan.
 4. Buka Grafana (http://localhost:3000), dashboard "PasarKita Overview". **Dashboard memakai
-   zona waktu UTC.** Cocokkan dengan waktu pada tiket sebelum menyimpulkan apa pun.
+   zona waktu UTC**, sedangkan jam yang dicetak tadi WIB. Ubah ke UTC sebelum mencocokkan,
+   dan cocokkan dengan waktu pada tiket sebelum menyimpulkan apa pun.
 5. Jalankan beban untuk halaman yang disebut tiket:
-   `k6 run labs/latihan/profile.k6.js` (5 request per detik selama 3 menit).
+   `k6 run labs/latihan/profile.k6.js` (2 request per detik selama 3 menit). Kalau laptopmu
+   terasa tidak kuat, kurangi dengan `RATE=1` dan catat itu di laporan.
 6. Diagnosa dengan metode di [bagian 6.1](../../docs/materi/06-diagnosa-dan-latihan.md):
    persempit dari luar ke dalam (k6, metrik server, trace, query database, sumber daya).
 7. Tulis laporan.
+
+Setelah selesai, jalankan `task latihan:selesai` dan hentikan `task traffic`.
 
 Tidak semua yang muncul di log dan grafik berhubungan dengan tiket. Memilah mana yang
 relevan adalah bagian dari latihan.

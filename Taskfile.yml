@@ -127,6 +127,16 @@ tasks:
     cmds:
       - '{{.COMPOSE}} exec -T postgres psql -U pasarkita -d pasarkita -c "UPDATE feature_flag SET enabled = {{.ON}} WHERE name = ''{{.NAME}}''"'
 
+  latihan:mulai:
+    desc: Latihan membedah tiket, nyalakan kondisi latihan (setelah ada aba-aba pengajar)
+    cmds:
+      - java tools/Kondisi.java mulai
+
+  latihan:selesai:
+    desc: Latihan membedah tiket, kembalikan kondisi seperti semula
+    cmds:
+      - java tools/Kondisi.java selesai
+
   # --- Tanpa Docker (untuk Mac yang tidak bisa memakai Docker Desktop). Lihat infra/native/README.md ---
   native:up:
     desc: Nyalakan PostgreSQL, WireMock, Prometheus, Grafana, Tempo tanpa Docker

@@ -114,7 +114,7 @@ Wrapper. Skrip bantu `tools/Doctor.java` (cek lingkungan) dan `tools/Evidence.ja
 | Script | Tujuan | Laju |
 | --- | --- | --- |
 | `labs/0/reproduce.k6.js` | Baseline 8 endpoint (Lab 0) | 31 iterasi/detik, 3 menit |
-| `labs/latihan/profile.k6.js` | Beban ke halaman profil penjual | 5 req/detik, 3 menit |
+| `labs/latihan/profile.k6.js` | Beban ke halaman profil penjual | 2 req/detik (ubah dengan `RATE=n`), 3 menit |
 | `traffic/simulator.k6.js` | Traffic latar belakang | 7 iterasi/detik, 8 jam |
 
 Semuanya memakai model terbuka (`constant-arrival-rate`), jadi laju request tetap walau
