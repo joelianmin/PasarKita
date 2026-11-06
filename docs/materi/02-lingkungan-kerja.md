@@ -16,7 +16,7 @@
 
 | Alat | Cek | Hasil yang diharapkan |
 | --- | --- | --- |
-| JDK 21 | `java -version` | versi 21 atau lebih baru |
+| JDK 21 | `java -version` | versi 21 (disarankan). `task doctor` juga menerima versi lebih baru; kalau memakainya, catat versinya di `BASELINE.md` dan baca 2.7 |
 | Docker Desktop | `docker --version`, `docker compose version` | terpasang dan **sedang berjalan** (versi terbaru di macOS butuh macOS 14 atau lebih baru; di macOS lama pakai komputer lain atau perbarui sistem operasi) |
 | Git | `git --version` | terpasang |
 | k6 | `k6 version` | terpasang |
@@ -238,9 +238,58 @@ bagian 6.1 dan jangan menebak.
 | Grafana kosong | Rentang waktu salah (UTC), atau Prometheus belum menarik metrik | Ubah rentang waktu; cek http://localhost:9090/targets |
 | Target Prometheus `DOWN` | Aplikasi belum jalan | Jalankan `task app` |
 | `task test` gagal | Docker mati (Testcontainers butuh Docker) | Nyalakan Docker lalu ulangi |
-| `./mvnw` tidak ditemukan | Maven Wrapper tidak ada di repo | Lihat 2.2; jangan mengubah `Taskfile.yml` sendiri |
+| `./mvnw` tidak ditemukan | Maven Wrapper tidak ada di repo, atau perintah `./mvnw` tidak jalan di Windows | Lihat 2.2. Jika perlu mengubah `Taskfile.yml`, ikuti 2.7: laporkan, ubah seminimal mungkin, dan catat |
 | Docker lambat atau container mati sendiri (Windows) | Memori WSL2 terlalu kecil | Atur `.wslconfig`, lalu `wsl --shutdown` |
 | Perintah lambat sekali (Windows) | Antivirus memindai folder repo | Kecualikan folder repo dan `%UserProfile%\.m2` dari Defender |
+
+---
+
+## 2.7 Mengubah berkas lingkungan: apa yang boleh, dan bagaimana mencatatnya
+
+Kadang alat di repo tidak jalan di laptopmu: perintah `./mvnw` gagal di Windows, JDK yang
+terpasang bukan 21, atau Docker butuh opsi tambahan. Mengubah berkas supaya alat jalan itu
+wajar. Yang perlu kamu pahami adalah **apa yang kamu ubah mempengaruhi apa yang kamu ukur**,
+dan hasilnya dibandingkan dengan kelompok lain serta dengan lab berikutnya.
+
+### Dua jenis perubahan
+
+| Jenis | Contoh | Perlakuan |
+| --- | --- | --- |
+| **Perbaikan lingkungan** | opsi `--disable-http2-plain` pada WireMock, perintah `mvnw.cmd` untuk Windows | Boleh bila perlu agar alat berjalan. **Catat** di `BASELINE.md` bagian 1 (apa, kenapa, commit-nya) |
+| **Perubahan yang mempengaruhi yang diukur** | kode di `src/`, versi di `pom.xml`, skrip beban, data seed, alat bukti | **Jangan** di Lab 0. Tugas Lab 0 mencatat kondisi awal, bukan memperbaikinya |
+
+### Berkas yang sebaiknya tidak diubah di Lab 0
+
+| Berkas | Alasan |
+| --- | --- |
+| `src/` | Itu yang diukur. Mengubahnya berarti mengukur aplikasi yang berbeda |
+| `pom.xml` (termasuk `java.version`) | Menentukan versi bahasa dan pustaka. `java.version` 21 adalah target kompilasi; JDK yang lebih baru tetap bisa membangunnya, jadi mengganti angkanya tidak perlu |
+| `labs/0/reproduce.k6.js` dan `infra/seed/` | Skrip beban dan data harus sama di semua kelompok agar angka sebanding |
+| `tools/Evidence.java` | Alat bukti. Mengubahnya membuat hash tidak bisa dipercaya |
+| `tools/Doctor.java` | Pemeriksa lingkungan. Mengubah ambangnya menyembunyikan masalah yang sebenarnya |
+
+### Tentang versi JDK
+
+- Versi **21 disarankan** karena itu yang dipakai pengajar untuk menyiapkan lab.
+- JDK yang lebih baru bisa lolos `task doctor`. Jika kamu memakainya, **tulis versi persisnya di
+  `BASELINE.md`** (bagian 1). Perbedaan versi bisa mengubah perilaku JVM (pengelolaan memori,
+  kompilasi JIT), jadi angkamu bisa berbeda dari kelompok lain tanpa ada yang salah.
+- Jangan mengubah `pom.xml` agar "cocok" dengan JDK-mu. Kalau pembangunan gagal di JDK yang lebih
+  baru, itu informasi: laporkan, dan pasang JDK 21 berdampingan.
+
+### Jika harus mengubah berkas alat (misalnya `Taskfile.yml` untuk Windows)
+
+1. **Laporkan lebih dulu.** Buat Issue dari templat "Macet / ada error" dengan pesan error
+   persisnya. Kemungkinan kelompok lain mengalami hal yang sama, dan perbaikannya sebaiknya
+   masuk ke repo materi untuk semua.
+2. **Ubah seminimal mungkin.** Satu baris lebih baik daripada menulis ulang berkas.
+3. **Commit terpisah** dengan pesan yang menjelaskan apa dan kenapa (bukan "fix").
+4. **Catat** di `BASELINE.md` bagian 1, "Perbaikan lingkungan": berkas, perubahan, alasan,
+   dan hash commit.
+5. **Jangan campurkan** dengan commit hasil pengukuran, supaya jelas commit mana yang diukur.
+
+> Cek diri: JDK-mu versi 25 dan `task doctor` lolos. Apa yang kamu tulis di `BASELINE.md`, dan
+> berkas apa yang tidak kamu ubah?
 
 ---
 

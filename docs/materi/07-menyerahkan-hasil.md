@@ -9,6 +9,7 @@
 > - memakai Git untuk cabang, commit, dan pull request
 > - membuat file bukti yang sah dengan urutan yang benar
 > - menulis `BASELINE.md` dengan temuan yang dipisahkan dari tafsiran
+> - memahami mengapa seed tidak boleh masuk riwayat dan mengapa riwayat tidak ditimpa
 
 ---
 
@@ -205,6 +206,97 @@ Untuk tiap temuan: Pengamatan, Bukti, Hipotesis, Dampak, Cara memverifikasi.
 
 > Cek diri: sebuah temuan berbunyi "Checkout lambat". Ubah menjadi pengamatan, bukti,
 > hipotesis, dan cara verifikasi yang masing-masing bisa diperiksa orang lain.
+
+---
+
+## 7.6 Riwayat Git sebagai catatan kerja
+
+Riwayat Git bukan sekadar cadangan. Itu **catatan kerja kelompokmu**: siapa mengubah apa,
+kapan, dan dalam urutan apa. Pengajar, kelompokmu sendiri, dan alat bukti memakainya. Karena
+itu ada tiga hal yang perlu dipahami.
+
+### 7.6.1 Riwayat menyimpan semuanya, termasuk yang sudah "dihapus"
+
+Setiap commit menyimpan keadaan penuh berkas pada saat itu. Menghapus sebuah baris di commit
+berikutnya hanya membuat versi terbaru bersih; versi lama tetap ada dan bisa dibuka dengan
+`git show <commit>:<berkas>` atau dicari dengan `git log -S"teks"`.
+
+Akibatnya, apa pun yang pernah di-commit dan di-push dianggap **sudah diketahui orang yang
+punya akses ke repo**, walau sudah dihapus kemudian.
+
+### 7.6.2 Seed, kata sandi, dan token tidak boleh masuk ke tempat mana pun
+
+`GROUP_SEED` hanya boleh ada di `group.env`. Tempat lain yang sering terlewat:
+
+| Tempat | Contoh |
+| --- | --- |
+| Berkas dokumentasi | panduan setup yang mencontohkan `GROUP_SEED=...` |
+| `BASELINE.md` | baris "GROUP_SEED" pada identitas |
+| Pesan commit | "Change GROUP_SEED value to ..." |
+| Deskripsi PR, komentar, Issue | file bukti yang ditempel utuh |
+
+Cara aman:
+- Tulis "seed kelompok" tanpa nilainya. Pengajar tahu nilainya dari `group.env`.
+- File bukti dari `task evidence` memuat seed. **Lampirkan sebagai berkas**, jangan tempel
+  isinya ke deskripsi PR.
+- Periksa sebelum commit dengan `git diff --staged`. Periksa riwayat dengan perintah di 7.6.5.
+
+Kalau sudah terlanjur:
+
+1. Hapus dari versi terbaru lewat **commit baru** dan jelaskan di pesannya (tanpa menulis nilainya).
+2. Beri tahu pengajar. Repo privat dan riwayatnya hanya terlihat oleh anggota dan pengajar,
+   jadi untuk seed praktis cukup dibiarkan.
+3. Untuk **kredensial sungguhan** (token, kata sandi), anggap bocor: cabut atau ganti dulu, baru
+   bersihkan. Menulis ulang riwayat tidak cukup, karena salinan lama mungkin sudah ada di tempat lain.
+
+### 7.6.3 Mengapa `git push --force` berbahaya untuk bukti
+
+`task evidence` mengikat commit ke dalam hash (7.4). Hash itu berlaku untuk **commit tertentu**.
+Jika kamu menimpa riwayat dengan `git push --force` (atau `rebase` lalu push paksa), commit lama
+diganti commit baru yang isinya mirip tetapi **nomor commitnya berbeda**. Akibatnya:
+
+- File bukti yang kamu lampirkan merujuk commit yang **tidak ada lagi** di repo.
+- Pengajar tidak bisa memastikan bahwa angka yang kamu laporkan diukur pada kode yang kini ada.
+- Komentar peninjau yang menempel pada commit lama bisa hilang.
+
+Yang dilakukan sebagai gantinya:
+
+| Situasi | Tindakan |
+| --- | --- |
+| Salah menulis sesuatu | Commit perbaikan baru. Riwayat tetap jujur |
+| Seed terlanjur masuk | Lihat 7.6.2. Jangan tulis ulang riwayat |
+| Sudah terlanjur force push | Beri tahu pengajar di PR, jelaskan alasannya, lalu **buat ulang bukti** dari commit terbaru |
+| Perlu merapikan commit | Tanyakan dulu. Merapikan boleh sebelum pernah di-push, bukan sesudahnya |
+
+### 7.6.4 Commit harus bisa ditautkan ke orangnya
+
+GitHub menautkan commit ke akun lewat **email yang tertulis di commit**. Jika emailnya tidak
+terdaftar di akunmu, commit muncul tanpa foto akun dan tidak dihitung sebagai kontribusimu.
+
+- Atur sekali di tiap laptop: `git config user.name "Nama"` dan `git config user.email "email-di-github"`.
+- Gunakan email yang terdaftar di GitHub (Settings, Emails), atau alamat `...@users.noreply.github.com`.
+- Satu laptop dipakai berdua: orang yang mengetik meng-commit, dan rekannya ditulis di akhir
+  pesan setelah satu baris kosong: `Co-authored-by: Nama <email>`.
+- Pembagian kerja yang tidak terlihat di commit (satu menganalisis, satu mengetik) ditulis di
+  Issue atau deskripsi PR.
+
+### 7.6.5 Memeriksa riwayatmu sendiri
+
+Semua perintah ini hanya membaca. Ganti `SEEDMU` dengan nilai seed kelompokmu (jangan menempel
+perintah berisi seed asli ke grup WA atau tangkapan layar).
+
+| Pertanyaan | Perintah | Hasil yang diharapkan |
+| --- | --- | --- |
+| Seed ada di berkas selain `group.env`? | `git grep -n "SEEDMU" -- . ':!group.env'` | kosong |
+| Seed pernah ada di berkas selain `group.env`? | `git log --all -S"SEEDMU" --oneline -- . ':!group.env'` | kosong |
+| Seed ada di pesan commit? | `git log --all --grep="SEEDMU" --oneline` | kosong |
+| Commit tertaut ke akun? | `git log --format="%h %an <%ae>" -10` | email terdaftar di GitHub |
+| Semua sudah di-push? | `git status -sb` | tanpa kata "ahead" |
+| Ada commit yang menimpa riwayat? | `git reflog` | tidak ada `reset` atau `rebase` yang kamu tidak ingat |
+
+> Cek diri: seed tertulis di `docs/PANDUAN-SETUP.md` pada commit tiga hari lalu, dan sudah kamu
+> hapus di commit kemarin. Apakah seed masih bisa ditemukan? Langkah apa yang kamu ambil, dan apa
+> yang tidak kamu lakukan?
 
 ---
 

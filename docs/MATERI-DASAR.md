@@ -39,6 +39,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 - 2.4 Jika Docker tidak bisa dipasang
 - 2.5 Menjalankan dari nol
 - 2.6 Pemecahan masalah
+- 2.7 Mengubah berkas lingkungan: apa yang boleh, dan bagaimana mencatatnya
 
 **[Bagian 3: Memahami sistem](materi/03-memahami-sistem.md)**
 
@@ -69,6 +70,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 - 7.3 Alur kerja dengan pull request
 - 7.4 Bukti dengan hash
 - 7.5 Menulis BASELINE.md
+- 7.6 Riwayat Git sebagai catatan kerja
 
 **[Referensi](materi/referensi.md)**
 
@@ -82,7 +84,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 | --- | --- |
 | Hari pertama: menyiapkan laptop dan repo kelompok | 7.1, 2.1, 2.2, 2.3 atau 2.4, 2.5, 2.6. Sambil menunggu unduhan: 1.1 |
 | Sebelum Lab 0 | 1.1, 1.2, 3.1, 3.2, 4.1, 4.2, 4.3 |
-| Saat mengerjakan Lab 0 | 4.2 (cara menjalankan), 6.1 jika macet, 7.1 sampai 7.5 untuk menyiapkan repo dan mengumpulkan |
+| Saat mengerjakan Lab 0 | 4.2 (cara menjalankan), 6.1 jika macet, 2.7 jika harus mengubah berkas alat, 7.1 sampai 7.6 untuk menyiapkan repo dan mengumpulkan |
 | Setelah Lab 0, minggu 2 sampai 6 | 5.1, 5.2, 5.3, lalu 6.2 untuk latihan |
 
 ## Cari berdasarkan masalah
@@ -99,6 +101,8 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 | Tidak paham sebuah istilah | R.2 |
 | Ingin tahu kode mana yang mengurus sesuatu | R.1 |
 | Menulis `BASELINE.md` | 7.5 |
+| Perlu mengubah `Taskfile.yml`, `pom.xml`, atau JDK-ku bukan 21 | 2.7 |
+| Seed atau kata sandi terlanjur ter-commit, atau riwayat perlu dirapikan | 7.6 |
 | Ingin berlatih membaca error | 6.2 |
 
 ## Dokumen terkait
