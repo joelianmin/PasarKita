@@ -8,6 +8,7 @@
 > - membedakan metrik, trace, dan log serta memakai Grafana, Prometheus, dan Tempo
 > - membaca script k6 dan hasilnya, termasuk `dropped_iterations` dan threshold
 > - menjalankan pengukuran berulang dengan kondisi yang sama
+> - mengenali dan menyesuaikan zona waktu di berbagai alat (UTC dan WIB)
 
 ---
 
@@ -37,7 +38,7 @@ request), **E**rrors (error), **D**uration (latensi). Untuk sumber daya, kerangk
 
 - Samakan rentang waktu grafik dengan waktu run k6.
 - Dashboard memakai zona waktu **UTC**. Kalau grafik terlihat kosong, periksa dulu
-  rentang waktunya.
+  rentang waktunya dan baca 4.3 tentang zona waktu.
 - Log yang sama berulang (misalnya peringatan lama) belum tentu penyebab masalah. Belajar
   menyaring *noise* termasuk keterampilan yang dinilai.
 - Log SQL pada profil `local` mencetak nilai parameter yang bisa memuat data pribadi.
@@ -94,6 +95,70 @@ k6 adalah alat uji beban yang script-nya ditulis dalam JavaScript.
 
 > Cek diri: apa bedanya `rate: 10` pada `constant-arrival-rate` dengan 10 VU yang
 > berulang-ulang pada executor tertutup, ketika server mendadak 5 kali lebih lambat?
+
+---
+
+## 4.3 Zona waktu: kesadaran dan penyesuaian
+
+Waktu yang sama bisa tertulis dengan jam berbeda di tiap alat. Di Indonesia barat (WIB),
+selisihnya **+7 jam dari UTC**: 09.00 WIB sama dengan 02.00 UTC, pada hari yang sama. Antara
+00.00 dan 06.59 WIB, **tanggal UTC lebih awal satu hari**. Ini sumber salah baca yang paling
+sering saat mencocokkan grafik, log, dan hasil k6.
+
+**Kesadaran: tiap alat punya aturan sendiri**
+
+| Tempat | Zona yang biasa tampil | Catatan |
+| --- | --- | --- |
+| Dashboard Grafana "PasarKita Overview" | UTC (disetel di JSON dashboard) | Disengaja, supaya semua orang melihat jam yang sama |
+| Prometheus, Tempo | UTC | Simpan dan tampilkan waktu dalam UTC |
+| Log aplikasi dan JVM | Zona sistem tempat proses jalan | Di container biasanya UTC, di laptop biasanya WIB |
+| PostgreSQL | Zona sesi (`SHOW TimeZone;`) | `timestamptz` ditampilkan sesuai zona sesi |
+| GitHub (commit, PR, komentar) | Zona browser kamu | Riwayat `git log` memuat offset zona penulisnya |
+| Hasil k6 dan berkas bukti | Periksa cap waktunya | Cari akhiran `Z` (UTC) atau `+07:00` |
+
+**Aturan pegangan.** Setiap kali menulis atau membaca sebuah jam, tanyakan zonanya. Di
+laporan, tulis keduanya: `09.15 WIB (02.15 UTC)`.
+
+### Cara menyesuaikan
+
+| Tujuan | Cara |
+| --- | --- |
+| Melihat dashboard dalam WIB, hanya untukmu | Di Grafana, pilih zona waktu di panel pemilih waktu (kanan atas), atau di profil pengguna |
+| Mengubah bawaan dashboard | Di `infra/compose/grafana/dashboards/pasarkita-overview.json`, ubah `"timezone": "utc"` menjadi `"browser"` atau `"Asia/Jakarta"`, lalu buat ulang Grafana |
+| Melihat jam WIB di PostgreSQL | `SET TIME ZONE 'Asia/Jakarta';` atau `SELECT now() AT TIME ZONE 'Asia/Jakarta';` |
+| Menyamakan zona log aplikasi | Opsi JVM `-Duser.timezone=UTC` (atau `Asia/Jakarta`), atau variabel `TZ` pada container |
+| Memeriksa jam sistemmu | `date` dan `date -u` (bandingkan), `SHOW TimeZone;` untuk database |
+| Mengubah cepat di terminal | `date -u -d '2026-11-06 09:15 +0700'` di Linux; di macOS `date -u -j -f '%Y-%m-%d %H:%M %z' '2026-11-06 09:15 +0700' '+%H:%M'` |
+
+Setelah mengubah setelan Grafana atau JVM, catat di `BASELINE.md` apa yang kamu ubah.
+Itu perubahan lingkungan pengukuran.
+
+### Pilihan zona: untung dan ruginya
+
+| Pilihan | Keuntungan | Kerugian |
+| --- | --- | --- |
+| **Semua UTC** (bawaan lab) | Tidak ambigu, tidak ada waktu musim panas, sama di tiap laptop dan server, perbandingan antarkelompok mudah | Perlu menghitung +7 jam di kepala, dan tanggal bisa terlihat mundur satu hari |
+| **Semua WIB** | Cocok dengan jam dinding kita, mudah dihubungkan dengan "tadi pagi" | Tak berlaku bagi anggota di zona lain, serta berbeda dari Prometheus, Tempo, dan banyak log server; mudah tercampur dengan UTC tanpa terasa |
+| **Mengikuti browser** | Tiap orang melihat jamnya sendiri | Dua orang melihat dasbor yang sama dengan jam berbeda, tangkapan layar menjadi ambigu |
+| **Campuran (UTC di sistem, WIB di tampilan)** | Sistem tetap konsisten, manusia tetap nyaman | Mudah lupa mengonversi, harus selalu menulis zona di laporan |
+
+**Saran untuk lab.** Biarkan sistem dan dashboard di UTC, lihat dan tulis jam dengan kedua
+zona di laporan. Alasannya: tiket dan bukti diperiksa orang lain, dan zona yang tidak
+ditulis adalah sumber perselisihan yang sulit dilacak. Melatih diri mengonversi juga berguna
+saat bekerja dengan server atau tim di zona lain.
+
+**Kesalahan yang sering terjadi**
+
+- Membandingkan jam log (WIB) dengan jam dashboard (UTC) tanpa mengonversi, lalu menyimpulkan
+  "tidak ada lonjakan".
+- Menulis `02.15` di laporan tanpa zona.
+- Mengubah zona dashboard di satu laptop lalu mengirim tangkapan layar tanpa menyebutnya.
+- Menyetel zona sesi PostgreSQL dan lupa bahwa nilai yang tersimpan tidak berubah, hanya
+  tampilannya.
+
+> Cek diri: tiket menyebut gejala terjadi "Jumat pukul 10.05". Bagaimana kamu memastikan
+> zona yang dimaksud, dan rentang waktu apa yang kamu pasang di Grafana agar tidak
+> terlewat?
 
 ---
 

@@ -49,6 +49,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 
 - 4.1 Observability: metrik, trace, log
 - 4.2 k6
+- 4.3 Zona waktu: kesadaran dan penyesuaian
 
 **[Bagian 5: Mutu dan desain](materi/05-mutu-dan-desain.md)**
 
@@ -80,7 +81,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 | Situasi | Baca |
 | --- | --- |
 | Hari pertama: menyiapkan laptop dan repo kelompok | 7.1, 2.1, 2.2, 2.3 atau 2.4, 2.5, 2.6. Sambil menunggu unduhan: 1.1 |
-| Sebelum Lab 0 | 1.1, 1.2, 3.1, 3.2, 4.1, 4.2 |
+| Sebelum Lab 0 | 1.1, 1.2, 3.1, 3.2, 4.1, 4.2, 4.3 |
 | Saat mengerjakan Lab 0 | 4.2 (cara menjalankan), 6.1 jika macet, 7.1 sampai 7.5 untuk menyiapkan repo dan mengumpulkan |
 | Setelah Lab 0, minggu 2 sampai 6 | 5.1, 5.2, 5.3, lalu 6.2 untuk latihan |
 
@@ -94,7 +95,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 | Port bentrok atau container mati | 6.1.5, 6.1.6 |
 | Aplikasi tidak mau start | 6.1.3 (lapisan 5 sampai 7), 6.1.5 |
 | Hasil k6 aneh (banyak 404, 402, 409, atau `dropped_iterations`) | 4.2, 6.1.5 |
-| Grafana kosong | 4.1, 6.1.5 |
+| Grafana kosong atau jam tidak cocok dengan log | 4.1, 4.3, 6.1.5 |
 | Tidak paham sebuah istilah | R.2 |
 | Ingin tahu kode mana yang mengurus sesuatu | R.1 |
 | Menulis `BASELINE.md` | 7.5 |
