@@ -1,6 +1,10 @@
 ## Tujuan
 Lab berapa, dan apa yang dikerjakan.
 
+## Tiket
+- [ ] Issue tiket sudah ada, ber-**assignee**, dan ditautkan di sini (`Closes #nomor`)
+- [ ] Komentar progres di Issue memuat waktu dalam WIB
+
 ## Yang berubah
 -
 
