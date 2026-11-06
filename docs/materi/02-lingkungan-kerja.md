@@ -184,7 +184,10 @@ mengembalikan 500 padahal WireMock mencatat balasan 200. Dengan metode bagian 6.
 log aplikasi menunjuk `Received RST_STREAM: Stream cancelled` pada pemanggilan
 `/payments/authorize` (lapisan 7 ke 8), program kecil berisi satu panggilan HTTP
 memisahkan penyebabnya (HTTP/2 dengan body tanpa panjang), dan satu perubahan di WireMock
-(`--disable-http2-plain`) menyelesaikannya. Tidak ada kode aplikasi yang diubah.
+(`--disable-http2-plain`) menyelesaikannya. Tidak ada kode aplikasi yang diubah. Opsi yang
+sama kini dipasang di `infra/compose/compose.yaml`, jadi jalur Docker juga tidak lagi
+mengalaminya. Jika `checkout` masih 500 dengan pesan itu, pastikan container WireMock sudah
+dibuat ulang (`task down` lalu `task up`).
 
 ---
 
