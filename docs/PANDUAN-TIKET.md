@@ -4,6 +4,12 @@ Tiket dari pengajar kamu daftarkan sendiri sebagai Issue di repo kelompok. Tujua
 cara kerja tim, bukan sekadar menyalin: menulis jelas, memilah prioritas, membagi kerja, dan
 melaporkan kemajuan.
 
+## Langkah 0: siapkan repo (sekali saja, satu menit)
+
+Buat label `tiket` di repo kelompok: **Issues, Labels, New label**, nama `tiket`. GitHub hanya
+memasang label yang sudah ada, jadi tanpa langkah ini templat tidak bisa menempelkannya.
+Menyiapkan konvensi tim sebelum mulai bekerja adalah kebiasaan yang baik.
+
 ## Langkah
 
 1. **Baca tiketnya sampai habis**, lalu tulis ulang dengan kata-katamu sendiri.
