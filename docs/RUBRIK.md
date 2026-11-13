@@ -4,6 +4,15 @@ Rubrik ini bukan daftar nilai. Ia menjawab dua pertanyaan: **apa buktinya bahwa 
 mengerjakan dan makin baik**, dan **apa langkah perbaikan berikutnya**. Kamu yang menunjukkan
 buktinya; pengajar memeriksa bukti itu di GitHub dan bertanya bila perlu.
 
+Rubrik dipakai untuk dua hal:
+
+- **Patokan (benchmark).** Tingkat **Cakap** adalah standar yang diharapkan dari semua
+  mahasiswa di mata kuliah ini. Kamu mengukur dirimu terhadap standar itu, bukan terhadap temanmu.
+  Tiap orang boleh mencapainya, dan tidak ada kuota untuk tingkat mana pun.
+- **Pembentukan (forming).** Hasil pemeriksaan adalah umpan balik untuk tumbuh: pengajar menunjuk
+  satu langkah berikutnya, kamu mencobanya, lalu bukti perubahannya diperiksa lagi. Kesalahan di
+  tengah proses wajar, dan dicatat sebagai bahan belajar, bukan hukuman.
+
 ## Empat dimensi
 
 | Dimensi | Pertanyaan |
@@ -32,12 +41,21 @@ buktinya; pengajar memeriksa bukti itu di GitHub dan bertanya bila perlu.
 ### B. Mutu kerja
 | Mulai | Cakap | Menonjol |
 | --- | --- | --- |
-| Angka dan temuan ada, tetapi pengamatan dan dugaan masih bercampur | Pengamatan, bukti, dan hipotesis terpisah; angka bersatuan dan bersumber; keterbatasan disebut | Hasil bisa diulang orang lain; kamu menemukan hal yang tidak diminta dan menjelaskan mengapa penting atau tidak |
+| Angka dan temuan ada, tetapi pengamatan dan dugaan masih bercampur | Pengamatan, bukti, dan hipotesis terpisah; angka bersatuan dan bersumber; keterbatasan disebut; kamu bisa menjelaskan sendiri isi laporanmu bila ditanya (lisan atau kuis) | Hasil bisa diulang orang lain; kamu menemukan hal yang tidak diminta dan menjelaskan mengapa penting atau tidak |
 
 ### C. Disiplin proses
 | Mulai | Cakap | Menonjol |
 | --- | --- | --- |
 | Sebagian aturan diikuti | Push bertahap, commit tertaut ke akunmu, tidak ada force push, perubahan lingkungan dicatat, bukti dibuat sesudah commit | Prosesmu menjadi contoh: pesan commit jelas, perubahan dijelaskan, hambatan dilaporkan sebelum diminta |
+
+**Merencanakan dan menyesuaikan rencana** (bagian dari dimensi C; lihat `docs/PANDUAN-RENCANA.md`):
+
+| Mulai | Cakap | Menonjol |
+| --- | --- | --- |
+| Ada Issue "Rencana sesi", tetapi tujuannya samar atau tidak diperbarui ketika kenyataan berbeda | Rencana terbit di awal sesi (tujuan terukur, tiket ber-penanggung-jawab dan berukuran, "selesai bila", risiko); perubahan besar dicatat dengan jam, pemicu berupa bukti, dan apa yang dikorbankan | Titik cek rutin; perubahan ringkas dan tepat waktu; refleksi memakai selisih ukuran dan kenyataan untuk memperbaiki rencana berikutnya, dan rekanmu terbantu karena rencananya jelas |
+
+Yang dilihat adalah kecepatan membuat rencana, kejujuran menyesuaikannya, dan kekuatan alasannya.
+Ketepatan rencana awal tidak dinilai.
 
 ### D. Soft skill
 | Mulai | Cakap | Menonjol |
@@ -46,7 +64,8 @@ buktinya; pengajar memeriksa bukti itu di GitHub dan bertanya bila perlu.
 
 ## Cara menunjukkan buktimu
 
-1. Salin `docs/templat/KONTRIBUSI.md` ke repo kelompok sebagai `KONTRIBUSI.md` di root.
+1. Salin `docs/templat/KONTRIBUSI.md` ke repo kelompok sebagai `KONTRIBUSI.md` di root. Rencana kerja
+   kelompok ada di Issue "Rencana sesi" (templat Issue), dan ikut menjadi bukti.
 2. Tiap anggota mengisi bagiannya sendiri: **tautan bukti** (commit, PR, Issue, komentar),
    **apa yang berubah sejak pemeriksaan terakhir**, dan **satu target perbaikan** untuk periode
    berikutnya.
@@ -64,4 +83,7 @@ buktinya; pengajar memeriksa bukti itu di GitHub dan bertanya bila perlu.
   Yang diperhatikan adalah **arah perubahan** dari periode ke periode, bukan angka tunggal.
 - "Belum terlihat" ditulis bila bukti memang belum ada, tanpa hukuman. Sebabnya bisa teknis
   (belum ada tiket, satu laptop dipakai berdua) dan bisa kamu perbaiki dengan menunjukkan bukti.
+- Sumber bukti yang dibaca: riwayat Git, Issue, PR, `KONTRIBUSI.md`, Issue "Rencana sesi", laporan tiket,
+  dan pertanyaan singkat (lisan atau kuis) tentang laporan yang kamu tulis. Kuis menunjukkan apa yang
+  sudah dan belum kamu pahami; hasilnya dipakai untuk menentukan pendampingan, bukan sebagai skor tunggal.
 - Hanya aturan yang tertulis di materi dan pengumuman yang dipakai.
