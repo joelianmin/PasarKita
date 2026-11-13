@@ -1,7 +1,7 @@
 # Materi dasar PasarKita
 
 Bahan minimal agar kamu paham apa yang kamu ukur dan bisa menjalankan lab tanpa tersangkut.
-Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah satu bagian referensi.
+Materi dibagi menjadi delapan bagian yang disusun menurut urutan kerja, ditambah satu bagian referensi.
 
 ## Cara memakai materi
 
@@ -22,6 +22,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 | [5. Mutu dan desain](materi/05-mutu-dan-desain.md) | Bagaimana menilai desain, mutu, dan keamanan? | Saat menilai kode atau menyusun target mutu |
 | [6. Diagnosa dan latihan](materi/06-diagnosa-dan-latihan.md) | Bagaimana menemukan penyebab masalah, dan melatihnya dengan sengaja? | Saat macet, dan untuk berlatih setelah Lab 0 |
 | [7. Menyerahkan hasil](materi/07-menyerahkan-hasil.md) | Bagaimana mengemas hasil menjadi bukti yang sah? | Saat mengumpulkan hasil Lab 0 |
+| [8. Contoh pengerjaan tiket](materi/08-contoh-pengerjaan-tiket.md) | Bagaimana satu tiket dikerjakan dari Issue sampai laporan, dan dari mana membaca kodenya? | Sebelum mengerjakan tiket latihan, dan saat bingung memulai |
 | [Referensi](materi/referensi.md) | Di mana kodenya? Apa arti istilah ini? Perintah apa yang dipakai? | Kapan saja |
 
 ## Daftar isi lengkap
@@ -72,6 +73,15 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 - 7.5 Menulis BASELINE.md
 - 7.6 Riwayat Git sebagai catatan kerja
 
+**[Bagian 8: Contoh pengerjaan tiket](materi/08-contoh-pengerjaan-tiket.md)**
+
+- 8.1 Lima langkah untuk setiap tiket
+- 8.2 Jalur satu request
+- 8.3 Cara membaca kode untuk satu tiket
+- 8.4 Contoh lengkap: tiket #4800
+- 8.5 Mulai membaca dari mana, per tiket
+- 8.6 Jika kamu macet
+
 **[Referensi](materi/referensi.md)**
 
 - R.1 Peta kode
@@ -85,6 +95,7 @@ Materi dibagi menjadi tujuh bagian yang disusun menurut urutan kerja, ditambah s
 | Hari pertama: menyiapkan laptop dan repo kelompok | 7.1, 2.1, 2.2, 2.3 atau 2.4, 2.5, 2.6. Sambil menunggu unduhan: 1.1 |
 | Sebelum Lab 0 | 1.1, 1.2, 3.1, 3.2, 4.1, 4.2, 4.3 |
 | Saat mengerjakan Lab 0 | 4.2 (cara menjalankan), 6.1 jika macet, 2.7 jika harus mengubah berkas alat, 7.1 sampai 7.6 untuk menyiapkan repo dan mengumpulkan |
+| Mengerjakan tiket latihan (membedah tiket) | 8.1 dulu, lalu 8.4 sebagai contoh, 8.5 untuk tiketmu, 6.1 jika macet |
 | Setelah Lab 0, minggu 2 sampai 6 | 5.1, 5.2, 5.3, lalu 6.2 untuk latihan |
 
 ## Cari berdasarkan masalah

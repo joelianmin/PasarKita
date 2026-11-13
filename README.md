@@ -32,8 +32,8 @@ Tidak bisa memakai Docker (misalnya macOS 12)? Lihat [`infra/native/README.md`](
 untuk menjalankan semua komponen pendukung tanpa Docker (`task native:up`).
 
 Baru di proyek ini? Mulai dari [`docs/MATERI-DASAR.md`](docs/MATERI-DASAR.md): daftar isi
-dan jalur belajar untuk tujuh bagian materi (fondasi, lingkungan kerja, memahami sistem,
-mengukur, mutu dan desain, diagnosa dan latihan, menyerahkan hasil) beserta referensi.
+dan jalur belajar untuk delapan bagian materi (fondasi, lingkungan kerja, memahami sistem,
+mengukur, mutu dan desain, diagnosa dan latihan, menyerahkan hasil, contoh pengerjaan tiket) beserta referensi.
 
 | Alamat | Isi |
 | --- | --- |

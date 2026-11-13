@@ -296,4 +296,4 @@ Semua perintah ini hanya membaca.
 
 ---
 
-*Sebelumnya: [Bagian 6](06-diagnosa-dan-latihan.md) · [Daftar isi](../MATERI-DASAR.md) · Berikutnya: [Referensi](referensi.md)*
+*Sebelumnya: [Bagian 6](06-diagnosa-dan-latihan.md) · [Daftar isi](../MATERI-DASAR.md) · Berikutnya: [Bagian 8](08-contoh-pengerjaan-tiket.md)*

@@ -93,4 +93,4 @@ Perintah `task` dari `Taskfile.yml`. Kolom terakhir adalah padanan tanpa Docker 
 
 ---
 
-*[Daftar isi](../MATERI-DASAR.md) · Sebelumnya: [Bagian 7](07-menyerahkan-hasil.md)*
+*[Daftar isi](../MATERI-DASAR.md) · Sebelumnya: [Bagian 8](08-contoh-pengerjaan-tiket.md)*
