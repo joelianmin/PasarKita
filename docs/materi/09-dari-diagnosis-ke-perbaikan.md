@@ -12,7 +12,7 @@
 > - menulis komentar penutupan yang bisa diperiksa orang lain
 >
 > Seluruh contoh di bagian ini **rekaan**: tiket #4900 dan dokumennya tidak ada di PasarKita dan tidak sama dengan tiket 20–26 Nov 2026.
-> Pengerjaan #4900 dari awal sampai ditutup, lengkap dengan apa yang dilakukan dan dipikirkan pemilik tiket dan dua peninjau: [`../CONTOH-PERBAIKAN-TIKET.md`](../CONTOH-PERBAIKAN-TIKET.md).
+> Contoh nyata satu tiket dari awal sampai ditutup (tiket #4821, diukur sungguhan), lengkap dengan apa yang dilakukan dan dipikirkan pemilik tiket dan dua peninjau: [`../CONTOH-PERBAIKAN-TIKET.md`](../CONTOH-PERBAIKAN-TIKET.md).
 
 ---
 

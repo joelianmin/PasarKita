@@ -1,339 +1,346 @@
-# Contoh ujung ke ujung: satu tiket perbaikan dari awal sampai ditutup
+# Contoh ujung ke ujung: memperbaiki tiket #4821 dari awal sampai ditutup
 
-> **Seluruhnya rekaan.** Tiket #4900, kartu "Total penjualan", tabel ringkasannya, dokumen konteks, nama orang, dan
-> semua angka di sini dibuat untuk contoh. Endpoint dasbor penjual **tidak ada** di PasarKita, jadi perintah ditulis untuk
-> menunjukkan bentuknya, bukan untuk kamu jalankan. Kasusnya sengaja berbeda dari tiket PK-201 sampai PK-208.
+> **Yang nyata:** tiket #4821 (`labs/latihan/TIKET.md`), kode PasarKita, perintah, keluaran, dan **semua angka**. Semuanya
+> diukur pada 20 November 2026, 17.55 sampai 18.18 WIB, di satu laptop: Intel Core i5-5250U (2 core, 4 thread), RAM 8 GB,
+> macOS 12, jalur tanpa Docker, data **skala S** (200 penjual, 5.000 produk).
 >
-> Tujuannya memperlihatkan **apa yang dilakukan dan apa yang dipikirkan** tiap orang di setiap langkah, termasuk
-> dugaan yang keliru dan koreksinya. Panduan di baliknya: `docs/materi/09-dari-diagnosis-ke-perbaikan.md`.
+> **Yang simulasi:** nama orang (Ayu, Bimo, Citra), percakapan, dan isi kepala mereka. Setiap angka yang mereka sebut berasal
+> dari pengukuran di atas. Angkamu akan berbeda karena mesinmu berbeda; polanya yang penting.
+>
+> #4821 adalah tiket pemanasan yang sudah kamu diagnosis. Di sini ia dikerjakan dengan alur tiket 20-26 November 2026:
+> diagnosis **lalu perbaikan**, PR, dua peninjau, dan komentar penutupan. Kasus ini berbeda dari PK-201 sampai PK-208.
+> Perbaikan di bawah tidak masuk ke templat; kode di repo tetap seperti semula.
 
 ## Pemeran
 
-| Orang | Peran | Catatan |
-| --- | --- | --- |
-| **Ayu** | Pemilik tiket #4900 | Sudah menjalankan Lab 0, pertama kali memperbaiki kode |
-| **Bimo** | Peninjau 1 | Memegang tiket lain di kelompok yang sama |
-| **Citra** | Peninjau 2 | Memegang tiket lain di kelompok yang sama |
-| Pengajar | Membaca Issue, PR, dan komentar penutupan | Tidak ikut mengerjakan |
-
-Kelompok contoh beranggota tiga orang, jadi dua peninjau berasal dari kelompok sendiri.
+| Orang | Peran |
+| --- | --- |
+| **Ayu** | Pemilik tiket #4821 |
+| **Bimo** | Peninjau 1 |
+| **Citra** | Peninjau 2 |
 
 ---
 
-## Tiket dan paket konteks
+## 1. Membaca tiket dan memprediksi
 
-**#4900 · Kartu "Total penjualan" di dasbor penjual lambat**
-
-> **Dewi, Dukungan Penjual (Senin, 10.00):** Penjual besar bilang kartu "Total penjualan" di dasbor mereka butuh dua sampai tiga detik. Penjual kecil tidak mengeluh.
->
-> **Pak Hadi, Senior Developer (10.20):** Pasti karena RAM server kurang. Naikkan saja ke 32 GB, atau pasang read replica.
->
-> **Rina, Product (10.35):** Mulai lambat sejak rilis hari Jumat.
-
-**Yang diharapkan:** p95 kartu turun minimal 70% untuk penjual terbesar, tanpa mengubah angka yang ditampilkan.
-
-Paket konteks berisi tiga berkas:
-
-- `kebijakan-keuangan.md` v1.2: angka di dasbor harus **sama persis** dengan laporan keuangan; tampilan tidak boleh
-  **tertinggal lebih dari 1 menit**.
-- `catatan-rilis-jumat.md`: rilis Jumat hanya mengubah warna tombol dan teks bantuan.
-- `tren-penjual.md`: invoice penjual terbesar naik tiga kali lipat dalam tiga bulan.
-
----
-
-## Hari 1 (Jumat): membaca, merencanakan, memprediksi
-
-### 09.05 · Rencana sesi (seluruh kelompok)
-
-**Dilakukan.** Bimo membuka Issue "Rencana sesi" dari templat. Ketiganya mengisi tujuan, tiket, ukuran, dan risiko dalam
-15 menit. Ayu menulis tiket #4900 dengan ukuran **L**.
-
-> **Ayu berpikir:** *"Ini pertama kali aku mengubah kode, bukan cuma mengukur. Langkahnya baru, jadi naik satu ukuran dari M
-> ke L, sesuai panduan rencana. Kalau ternyata cepat, aku tulis saja di refleksi."*
->
-> **Bimo berpikir:** *"Risiko terbesar kami bukan kodenya, tapi tinjauan PR. Kalau tiga PR selesai bersamaan hari Selasa,
-> kami saling menunggu. Aku tulis risiko itu dengan tandanya: 'belum ada PR terbuka pada Senin sore'."*
-
-### 09.25 · Issue tiket dan prediksi (Ayu)
-
-**Dilakukan.** Ayu membuat Issue dari templat "Tiket kerja", memasang label `triage`, dan menyalin
-`docs/templat/JURNAL-DIAGNOSIS.md` menjadi jurnalnya. Ia menulis prediksi **sebelum** membuka alat apa pun:
+**Dilakukan.** Ayu membaca #4821 di `labs/latihan/TIKET.md`, membuat Issue dari templat "Tiket kerja", memasang label `triage`,
+dan menyalin `docs/templat/JURNAL-DIAGNOSIS.md`. Sebelum menjalankan apa pun, ia menulis prediksi:
 
 | # | Dugaan (belum terbukti) | Yang akan diukur | Hasil yang diharapkan |
 | --- | --- | --- | --- |
-| 1 | Query kartu tidak memakai indeks, jadi memindai seluruh tabel invoice | `EXPLAIN (ANALYZE, BUFFERS)` query kartu untuk penjual 1 | Seq Scan pada `invoice` |
-| 2 | Rilis Jumat ikut berperan | Isi catatan rilis, jam mulai keluhan | Ada perubahan di jalur kartu |
+| 1 | Query produk untuk toko besar lambat | `pg_stat_statements` untuk request profil penjual 1 | Query produk puluhan sampai ratusan ms |
+| 2 | Ada perubahan konfigurasi kemarin | Tabel `feature_flag`, kode yang membaca flag | Satu flag berubah nilai |
 
-> **Ayu berpikir:** *"Dugaan 1 rasanya kuat, karena gejalanya mirip yang sering dibahas: lambat untuk data besar. Tapi materi
-> bilang prediksi tidak dinilai benar atau salah. Jadi aku tulis saja, lalu aku cari satu ukuran yang bisa menggugurkannya."*
+> **Ayu berpikir:** *"Tiketnya bilang 'kemarin masih cepat', 'tidak ada rilis kode', dan 'tidak bisa memastikan apakah ada
+> perubahan konfigurasi'. Kalau kodenya tidak berubah tapi perilakunya berubah, yang berubah pasti data atau konfigurasi.
+> Dugaan 1 aku tulis karena itu yang pertama terlintas, bukan karena aku yakin."*
 
-### 09.50 · Membaca paket konteks (Ayu)
+## 2. Memilah sinyal
 
-**Dilakukan.** Ayu membaca tiga berkas konteks dan mengisi daftar asumsi.
+Semua sinyal di bawah diambil dari teks tiket #4821 dan dari log aplikasi.
 
-| Batasan | Sumber | Jenis | Dampak pada pilihan |
-| --- | --- | --- | --- |
-| Angka sama persis dengan laporan keuangan | `kebijakan-keuangan.md` v1.2, poin 1 | Keras | Perbaikan harus bisa dibuktikan menghasilkan angka yang sama |
-| Tertinggal paling lama 1 menit | `kebijakan-keuangan.md` v1.2, poin 2 | Keras | Cache berumur beberapa menit tidak boleh |
-| Rilis Jumat hanya warna dan teks | `catatan-rilis-jumat.md` | Konteks | Menggugurkan dugaan 2 sebelum mengukur |
-| Invoice penjual terbesar naik 3x dalam 3 bulan | `tren-penjual.md` | Konteks | Masalah memburuk bila dibiarkan |
-| "Naikkan RAM" dan "read replica" | Thread Pak Hadi | Pendapat | Tidak mengikat; perlu bukti |
-
-> **Ayu berpikir:** *"Dugaan 2 sudah gugur tanpa mengukur: rilisnya tidak menyentuh kartu. Aku tidak menghapus barisnya di
-> jurnal, aku tandai 'gugur, sumber: catatan rilis'. Batas 1 menit itu penting, karena itu menolak cara paling gampang:
-> cache."*
-
-### 10.30 · Triage sinyal (Ayu)
-
-| Sinyal | Kategori | Alasan dan bukti |
+| Sinyal | Kategori | Alasan |
 | --- | --- | --- |
-| Kartu lambat untuk penjual besar, tidak untuk penjual kecil | Gejala utama | Bisa direproduksi; akan diukur |
-| Keluhan masuk ke Dukungan | Akibat | Muncul karena gejala |
-| "Mulai lambat sejak rilis Jumat" | Kebetulan waktu | Catatan rilis tidak menyentuh kartu; data penjual besar tumbuh 3x |
-| "RAM kurang" | Dugaan keliru (sementara) | Belum diukur; akan dicek memori dan CPU |
-| "Pasang read replica" | Solusi titipan | Usul perbaikan sebelum penyebab diketahui |
+| Profil toko lambat, sampai beberapa detik | Gejala utama | Bisa direproduksi dengan `labs/latihan/profile.k6.js` |
+| Keluhan paling banyak dari toko yang produknya banyak | Gejala utama (selektif) | Petunjuk bahwa biayanya sebanding dengan jumlah produk |
+| Halaman lain tidak dikeluhkan | Petunjuk lokasi | Masalah ada di jalur profil, bukan di seluruh sistem |
+| Kemarin masih cepat, tidak ada rilis kode | Petunjuk perubahan | Yang berubah bukan kode |
+| WARN `Property 'pasarkita.legacy.timeout' is deprecated` di log | Noise | Muncul tiap 30 detik, juga saat semuanya cepat (17 baris di log selama pengukuran awal) |
 
-> **Ayu berpikir:** *"Untuk 'RAM kurang' aku tulis 'sementara', karena belum ada angkanya. Jangan memvonis dugaan senior
-> hanya karena aku tidak suka usulnya. Buktinya harus dari ukuran."*
+> **Ayu berpikir:** *"'Kemarin masih cepat' biasanya aku curigai sebagai kebetulan waktu. Tapi di sini ia bukan kebetulan,
+> karena tiket sendiri menyebut kemungkinan perubahan konfigurasi. Aku belum memvonisnya; aku cari buktinya."*
 
-Ayu mengganti label Issue dari `triage` ke `diagnosis` setelah reproduksi berhasil (di bawah).
+## 3. Reproduksi: laptopnya ikut tumbang
 
----
+**Dilakukan.** Ayu menyalakan kondisi latihan dan mengukur dengan skrip bawaan (2 req/detik, 3 menit, 30% request ke penjual 1):
 
-## Hari 1 (Jumat siang): reproduksi dan diagnosis
+```text
+$ task latihan:mulai
+Kondisi latihan DINYALAKAN (jalur tanpa Docker) pukul 17.57.31 WIB.
 
-### 13.00 · Reproduksi (Ayu)
+$ k6 run labs/latihan/profile.k6.js
+checks_failed......: 57.80% 174 out of 301
+http_req_duration..: avg=30.22s med=30.01s p(95)=57.5s p(99)=1m0s max=1m0s
+```
 
-**Dilakukan.** Ayu mengukur kartu untuk penjual terbesar (id 1) dan penjual kecil, 2 req/detik, 3 menit, run pertama dibuang
-sebagai pemanasan. Angka rekaan:
+> **Ayu berpikir:** *"58% gagal dan median 30 detik? Itu bukan 'beberapa detik' lagi. Request menumpuk sampai kena batas 60
+> detik k6. Artinya laptopku tidak sanggup melayani 2 request per detik dalam kondisi ini, jadi angkanya mengukur antrean,
+> bukan halaman profil. `LAB.md` sudah bilang: kalau laptop tidak kuat, pakai `RATE=1` dan catat di laporan."*
 
-| Penjual | p50 | p95 | Error |
+Ia mengulang dengan `RATE=1`:
+
+```text
+$ RATE=1 k6 run labs/latihan/profile.k6.js
+checks_failed......: 0.00%   0 out of 181
+http_req_duration..: avg=1.02s med=733.67ms p(95)=2.5s p(99)=3.19s max=3.95s
+```
+
+Sebagai pembanding, sebelum kondisi dinyalakan (2 req/detik, 1 menit): **p50 17,9 ms, p95 56,3 ms**, tanpa error.
+
+## 4. Dua sumber lain: database dan CPU
+
+**Dilakukan.** Ayu mengosongkan `pg_stat_statements`, mengirim 10 request ke profil penjual 1, lalu melihat query yang keluar:
+
+```text
+ calls | mean_ms | query
+    10 |   0.231 | select s1_0.id,s1_0.city,s1_0.name from seller s1_0 where s1_0.id=$1
+    10 |   0.242 | select p1_0.id,p1_0.description,p1_0.name,p1_0.price,p1_0.seller_id,p1_0.sku from product ...
+     3 |   0.022 | select enabled from feature_flag where name = $1
+```
+
+Selama beban `RATE=1`, CPU proses aplikasi (dari `ps`) melonjak sampai **191,6%** (dua core penuh), sedangkan hanya **satu**
+koneksi database yang aktif.
+
+> **Ayu berpikir:** *"Dugaan 1 gugur. Dua query per request, masing-masing di bawah 1 ms. Database tidak sibuk sama sekali,
+> tapi CPU aplikasi hampir habis. Jadi waktunya dihabiskan di dalam aplikasi, bukan di database. Dan ada query ketiga yang
+> menarik: `feature_flag`. Itu dugaan 2."*
+
+## 5. Menelusuri kode
+
+**Dilakukan.** Ayu membuka `SellerProfileController` (Bagian 8.5 menunjuk ke sini) dan menemukan:
+
+```java
+boolean dynamicThumbnail = flags.isEnabled("seller.dynamic-thumbnail");
+List<ProductCard> cards = products.findTop60BySellerIdOrderByIdAsc(id).stream()
+        .map(p -> new ProductCard(p.getId(), p.getName(), p.getPrice(),
+                dynamicThumbnail ? thumbnails.thumbnailFor(p.getId()) : "/images/" + p.getId() + ".jpg"))
+```
+
+Lalu `ThumbnailService.thumbnailFor`: membuat gambar **1600 x 1600**, mewarnainya, mengecilkannya ke 200 x 200 dengan
+interpolasi bicubic, lalu hanya membaca **satu piksel** untuk membentuk string URL. Itu dilakukan untuk **setiap produk**,
+sampai 60 per request.
+
+Di database, `select name, enabled from feature_flag` menunjukkan `seller.dynamic-thumbnail` bernilai `true`.
+
+Ayu mengukur per penjual dengan `curl`, 10 request berurutan tanpa beban lain:
+
+| Penjual | Produk di profil | Median |
+| --- | --- | --- |
+| 1 | 60 | 1.479 ms |
+| 2 | 25 | 576 ms |
+| 77 | 25 | 913 ms |
+
+> **Ayu berpikir:** *"Ini menjawab 'toko yang produknya banyak'. Penjual 1 menampilkan 60 produk, penjual 2 hanya 25. 60 dibagi
+> 25 itu 2,4; 1.479 dibagi 576 itu 2,6. Hampir sebanding: biayanya per produk. Penjual 77 lebih lambat dari penjual 2 padahal
+> produknya sama. Itu belum bisa aku jelaskan; aku tulis sebagai ketidakpastian, bukan aku abaikan.*
+>
+> *Penyebabnya sekarang jelas: flag menyala, dan tiap produk membuat gambar besar hanya untuk satu string. Tapi siapa yang
+> menyalakan flag dan kapan? Tabel `feature_flag` hanya punya kolom `name` dan `enabled`, tanpa waktu perubahan. Jam
+> perubahannya tidak bisa aku buktikan dari database. Itu keterbatasan, dan aku tulis."*
+
+Ia mengganti label Issue ke `diagnosis` dan menulis di jurnal: *"Dugaan 1 salah (query di bawah 1 ms). Dugaan 2 benar:
+`seller.dynamic-thumbnail` menyala; waktunya di pembuatan gambar per produk."*
+
+## 6. Memilih perbaikan
+
+**Dilakukan.** Ayu menulis "Selesai bila" di Issue, karena tiket ini tidak menyebut target:
+
+- Respons profil **sama persis** dengan sekarang (flag menyala), byte demi byte, untuk beberapa penjual.
+- p95 pada 2 req/detik kembali setara kondisi flag mati (sekitar 56 ms di laptop ini), tanpa error.
+
+> **Ayu berpikir:** *"Kenapa respons harus sama dengan kondisi flag menyala, bukan flag mati? Karena aku tidak tahu siapa yang
+> menyalakan flag dan apakah fiturnya memang diinginkan. Mematikan flag mengubah isi respons; itu keputusan produk, bukan
+> keputusanku. Aku catat sebagai asumsi, supaya peninjau bisa membantahnya."*
+
+Ia memeriksa dugaan itu. Respons penjual 2 saat flag mati dan menyala:
+
+```text
+mati : {'id': 1, 'name': 'Sambal Kemasan Besar #1', 'price': 280900.0, 'thumbnail': '/images/1.jpg'}
+nyala: {'id': 1, 'name': 'Sambal Kemasan Besar #1', 'price': 280900.0, 'thumbnail': '/thumbnails/1-ff92bbe3.jpg'}
+```
+
+Field lain sama; hanya `thumbnail` yang berbeda. Lalu ia membandingkan alternatif:
+
+| Alternatif | Akar masalah | Respons tetap sama? | Catatan |
 | --- | --- | --- | --- |
-| Penjual 1 (terbesar) | 1.620 ms | 2.410 ms | 0% |
-| Penjual kecil | 18 ms | 60 ms | 0% |
+| **A.** Matikan flag | Tidak, hanya menghindari | **Tidak**: `thumbnail` kembali `/images/<id>.jpg` | Cepat sebagai mitigasi darurat, tapi keputusan produk |
+| **B.** Simpan hasil per produk (cache) | Sebagian: tiap produk tetap mahal sekali | Ya | Request pertama tiap produk tetap lambat; memori bertambah sebanding jumlah produk |
+| **C.** Buat gambar langsung 200 x 200, tanpa 1600 x 1600 | Ya: pekerjaan mahal dihapus | **Belum tahu**, harus diuji | Tanpa state, tanpa memori tambahan |
+| **D.** Buat 60 gambar secara paralel | Tidak: total CPU sama | Ya | Laptop sudah jenuh di 191% CPU; paralel memperburuk saat beban |
 
-Memori bebas di server 60%, CPU database 18%.
+> **Ayu berpikir:** *"Aku hampir menolak C, karena aku yakin gambar yang dibuat langsung kecil pasti beda warnanya dengan
+> gambar besar yang dikecilkan, jadi URL-nya berubah. Tapi itu dugaan, bukan bukti. Aku uji saja."*
 
-> **Ayu berpikir:** *"'RAM kurang' sekarang benar-benar gugur: memori bebas 60%. Dan jarak 2.410 ms lawan 60 ms terlalu
-> besar untuk masalah mesin, karena mesinnya sama untuk keduanya. Yang berbeda hanya datanya."*
-
-### 13.40 · Menelusuri kode dan SQL (Ayu)
-
-**Dilakukan.** Ayu membaca controller kartu dan repository-nya, lalu memakai `pg_stat_statements` seperti Bagian 8.3.
-Satu request menghasilkan **satu query**:
-
-```sql
-select coalesce(sum(amount), 0) from invoice where seller_id = $1
-```
-
-Lalu `EXPLAIN (ANALYZE, BUFFERS)` untuk penjual 1 (rekaan, diringkas):
+**Dilakukan.** Ayu menulis program kecil yang menjalankan kedua cara untuk produk yang sama dan membandingkan URL-nya:
 
 ```text
-Aggregate  (actual time=1580 ms)
-  -> Index Scan using idx_invoice_seller on invoice  (rows=381.204)
+produk 1: sekarang /thumbnails/1-ff92bbe3.jpg | langsung kecil /thumbnails/1-ff92bbe3.jpg
+URL berbeda: 0 dari 60 produk
+60 thumbnail: sekarang 1007 ms, langsung kecil 18 ms
 ```
 
-> **Ayu berpikir:** *"Dugaan 1-ku salah, dan itu temuan penting. Indeksnya **dipakai**: Index Scan, bukan Seq Scan. Masalahnya
-> bukan cara mencari baris, tapi **jumlah baris yang harus dijumlahkan**: 381 ribu baris setiap kali kartu dibuka. Indeks
-> apa pun tetap harus membaca semua baris itu, karena yang diminta memang totalnya. Kalau tadi aku langsung menambah indeks,
-> aku memperbaiki hal yang tidak rusak."*
-
-Ia menulis di jurnal, bagian "Dugaan awal vs temuan": *"Dugaan 1 salah: indeks sudah dipakai. Penyebabnya volume yang
-dijumlahkan per request, dan volume itu tumbuh 3x dalam 3 bulan."*
-
-### 14.30 · Komentar titik cek (Ayu, di Issue rencana)
+> **Ayu berpikir:** *"Dugaanku salah lagi, dan untung aku uji. Tapi 60 produk belum cukup untuk bilang 'selalu sama'. Warnanya
+> hanya bergantung pada `productId * 37 % 255`. Karena 37 dan 255 tidak punya faktor bersama, produk 1 sampai 255 mencakup
+> semua 255 kemungkinan warna. Kalau 255 itu sama, semua produk sama."*
 
 ```text
-Cek 14.30
-Selesai: #4900 reproduksi dan EXPLAIN; dugaan 1 (indeks) gugur, penyebab: 381 ribu baris dijumlahkan tiap request
-Berikutnya: #4900 bandingkan alternatif
-Hambatan: tidak ada
+URL berbeda: 0 dari 255 produk
 ```
 
----
+Pilihan: **C**. A ditolak karena mengubah respons, B karena tidak menghapus biaya, D karena memperburuk CPU yang sudah jenuh.
 
-## Hari 2-3 (Sabtu-Senin): memilih dan membuat perbaikan
+## 7. Perbaikan dan pengukuran ulang
 
-### Membandingkan alternatif (Ayu)
+**Dilakukan.** Ayu membuat cabang, mengubah satu berkas, dan meng-commit sebelum mengukur:
 
-| Alternatif | Akar masalah | Batasan | Biaya dan risiko | Bisa dibatalkan |
-| --- | --- | --- | --- | --- |
-| **A.** Tabel ringkasan per penjual, ditambah setiap invoice terbit dalam transaksi yang sama | Ya: kartu membaca 1 baris | Sama persis bila penambahan selalu satu transaksi dengan invoice; tidak tertinggal | Migrasi baru, satu `UPDATE` tambahan per invoice | Sedang: hapus tabel, kembali ke query lama |
-| **B.** Cache total 10 menit | Menutupi | **Melanggar** batas 1 menit | Angka basi | Mudah |
-| **C.** Read replica | Tidak: replica menjalankan query yang sama | Replica bisa tertinggal | Biaya infrastruktur | Sulit |
-| **D.** Indeks baru | Tidak: indeks sudah dipakai (EXPLAIN 13.40) | Terpenuhi | Rendah | Mudah |
+```diff
+-import java.awt.geom.AffineTransform;
+-import java.awt.image.AffineTransformOp;
+ import java.awt.image.BufferedImage;
 
-> **Ayu berpikir:** *"D aku masukkan dengan sengaja, karena itu dugaan awalku. Menulis kenapa ia ditolak, dengan bukti
-> EXPLAIN, lebih berguna daripada pura-pura tidak pernah memikirkannya. Pilihan A, tapi A punya satu janji yang harus aku
-> buktikan: angkanya sama persis. Kalau penambahan ringkasan dan invoice tidak dalam satu transaksi, suatu hari angkanya
-> bisa selisih, dan itu melanggar batasan keras."*
+ @Service
+ class ThumbnailService {
 
-### Senin 10.00 · Perubahan rencana (Ayu, di Issue rencana)
++    private static final int UKURAN = 200;
++
++    // Gambar langsung dibuat 200x200, tidak lagi 1600x1600 lalu dikecilkan.
++    // URL yang dihasilkan sama persis untuk semua 255 nilai shade (diuji sebelum perubahan ini).
+     String thumbnailFor(Long productId) {
+-        BufferedImage source = new BufferedImage(1600, 1600, BufferedImage.TYPE_INT_RGB);
+-        Graphics2D graphics = source.createGraphics();
++        BufferedImage thumbnail = new BufferedImage(UKURAN, UKURAN, BufferedImage.TYPE_INT_RGB);
++        Graphics2D graphics = thumbnail.createGraphics();
+         try {
+             int shade = (int) (productId * 37 % 255);
+-            graphics.setPaint(new GradientPaint(0, 0, new Color(shade, 120, 200), 1600, 1600, Color.WHITE));
+-            graphics.fillRect(0, 0, 1600, 1600);
++            graphics.setPaint(new GradientPaint(0, 0, new Color(shade, 120, 200), UKURAN, UKURAN, Color.WHITE));
++            graphics.fillRect(0, 0, UKURAN, UKURAN);
+         } finally {
+             graphics.dispose();
+         }
+-        AffineTransformOp scale = new AffineTransformOp(
+-                AffineTransform.getScaleInstance(0.125, 0.125), AffineTransformOp.TYPE_BICUBIC);
+-        BufferedImage thumbnail = scale.filter(source, null);
+         return "/thumbnails/" + productId + "-" + Integer.toHexString(thumbnail.getRGB(100, 100)) + ".jpg";
+     }
+ }
+```
+
+Aplikasi dijalankan ulang, flag **tetap menyala**, lalu diukur dengan skrip, laju, dan durasi yang sama:
+
+| Ukuran | Sebelum (flag menyala) | Sesudah (flag menyala) |
+| --- | --- | --- |
+| 2 req/detik, 3 menit | 57,8% gagal, p50 30,0 s, p95 57,5 s | 0% gagal, p50 18,2 ms, p95 28,9 ms, p99 53,8 ms |
+| 1 req/detik, 3 menit | p50 733,7 ms, p95 2,5 s, p99 3,19 s | p50 23,9 ms, p95 65,8 ms, p99 522,0 ms |
+| Profil penjual 1, median `curl` | 1.479 ms | 20 ms |
+| CPU aplikasi selama beban (`ps`) | sampai 191,6% | 0,5% sampai 7,1% |
+| Query database per request | 2 (di bawah 1 ms) | 2 (di bawah 1 ms) |
+
+Respons sebelum dan sesudah, untuk penjual 1, 2, dan 77, dibandingkan dengan `cmp`: **sama persis**.
+
+> **Ayu berpikir:** *"p95 di 2 req/detik sekarang 28,9 ms, bahkan di bawah kondisi flag mati (56,3 ms). Tapi itu dua run
+> berbeda dengan durasi berbeda, jadi aku tidak mengklaim 'lebih cepat dari sebelum flag'. Yang aku klaim: setara, dan
+> tanpa error. Lalu p99 522 ms di run 1 req/detik. Itu satu-dua request lambat. Run itu yang pertama setelah aplikasi
+> dijalankan ulang, jadi dugaanku JIT belum panas. Dugaan, belum terbukti: aku tulis begitu."*
+
+Ia membuka PR berisi diff di atas dan memasang label `review`.
+
+## 8. Tinjauan Bimo
+
+**Dilakukan.** Bimo membaca PR dari atas: akar masalah, asumsi, alternatif, lalu diff. Ia meminta perubahan:
 
 ```text
-Perubahan 10.00
-Berubah: #4900 tetap L, tetapi langkah "isi awal tabel ringkasan" ditambah (45 menit)
-Pemicu: tabel ringkasan baru kosong; tanpa isi awal, kartu menampilkan 0 untuk penjual lama (ditemukan saat uji lokal 09.40)
-Dikorbankan: tinjauan silang untuk tiket Bimo digeser dari Senin sore ke Selasa pagi
+1. "Sama persis" untuk 255 warna: bagaimana kalau productId sangat besar, misalnya di atas 2 miliar?
+   productId * 37 bisa melewati batas int.
+2. Respons dibandingkan untuk tiga penjual dengan cmp. Itu bagus. Tolong tempel perintahnya di PR,
+   supaya aku bisa mengulangnya.
 ```
 
-> **Ayu berpikir:** *"Ini hampir lolos. Kalau aku tidak menguji dengan penjual yang sudah lama punya invoice, kartu akan
-> menampilkan 0. Migrasinya harus mengisi ringkasan dari data invoice yang sudah ada, satu kali, dalam berkas migrasi versi
-> baru, bukan mengubah V1."*
+> **Bimo berpikir:** *"Argumen 255 warna itu rapi, tapi aku harus memeriksa asumsinya, bukan mengaguminya. `productId` bertipe
+> `Long`, `37` int; hasilnya long, jadi tidak meluap. Tapi aku tidak yakin, jadi aku tanya."*
 
-### Senin 14.00 · Mengukur ulang (Ayu)
+**Ayu menanggapi:** `productId` adalah `Long`, sehingga `productId * 37` dihitung sebagai `long` dan baru diubah ke `int`
+setelah `% 255`; hasilnya selalu 0 sampai 254. Perhitungan warna tidak diubah oleh perbaikan ini, sehingga perilakunya untuk
+id besar sama dengan sebelumnya. Ia menempel perintah `cmp` dan program pembanding di PR.
 
-**Dilakukan.** Ayu commit dulu, lalu menjalankan pengukuran dengan skrip, data, dan laju yang sama seperti sebelumnya.
-Ia juga menulis satu query pembanding untuk lima penjual:
+Bimo menjalankan perintahnya sendiri, lalu menyetujui dengan komentar yang menyebut apa yang ia periksa.
 
-```sql
-select s.seller_id, s.total as ringkasan, (select sum(amount) from invoice i where i.seller_id = s.seller_id) as hitung_ulang
-from ringkasan_penjual s where s.seller_id in (1, 2, 50, 300, 1200);
-```
+## 9. Tinjauan Citra
 
-Hasil rekaan: kelima baris sama persis. p95 penjual 1 turun dari 2.410 ms menjadi 14 ms; penjual kecil tetap sekitar 12 ms.
-
-> **Ayu berpikir:** *"Lima penjual sama, termasuk yang terbesar dan yang paling baru. Tapi itu sesudah migrasi. Aku juga perlu
-> satu bukti bahwa invoice **baru** menambah ringkasan dengan benar: buat satu checkout, lalu bandingkan lagi. Kalau tidak,
-> peninjau pasti menanyakannya."*
-
-Ia membuat satu checkout, membandingkan ulang, dan angka tetap sama. Lalu membuka PR, memasang label `review` di Issue.
-
----
-
-## Hari 4 (Selasa): tinjauan PR
-
-### 08.30 · Tinjauan Bimo
-
-**Dilakukan.** Bimo memakai daftar periksa Bagian 9.7, membaca PR dari atas: akar masalah, daftar asumsi, alternatif, lalu
-berkas yang berubah. Ia meminta perubahan (**Request changes**):
+**Dilakukan.** Citra memeriksa hal yang belum disentuh Bimo: hasil di bawah beban dan angka yang janggal.
 
 ```text
-1. Bukti "sama persis" hanya untuk lima penjual dan satu checkout. Bagaimana dengan invoice yang dibatalkan?
-   Di laporan keuangan, invoice batal tidak dihitung. Apakah ringkasan juga dikurangi?
-2. Di migrasi, isi awal ringkasan dan pembuatan tabel ada di satu berkas. Kalau isi awal gagal di tengah,
-   apakah tabelnya setengah terisi?
+Diperiksa: run 2 req/detik sesudah perbaikan (0 dari 361 gagal, p95 28,9 ms), CPU turun dari sampai 191,6% ke
+paling tinggi 7,1%, diff hanya satu berkas dan tidak menyentuh controller.
+Pertanyaan: p99 522 ms dan max 2,1 s di run 1 req/detik. Di run 2 req/detik yang lebih berat, p99 hanya 53,8 ms.
+Kenapa run yang lebih ringan punya ekor lebih panjang?
 ```
 
-> **Bimo berpikir:** *"Angkanya meyakinkan, tapi daftar asumsi Ayu bilang 'sama persis dengan laporan keuangan'. Aku buka
-> lagi `kebijakan-keuangan.md`: laporan keuangan tidak menghitung invoice batal. Kalau aplikasinya punya pembatalan,
-> ringkasan harus ikut turun. Aku tidak tahu jawabannya, jadi aku tanya, bukan menuduh. Dan aku tidak menulis 'LGTM' hanya
-> karena p95-nya bagus."*
+> **Citra berpikir:** *"Kalau aku hanya melihat p95, aku melewatkan ini. Run yang lebih ringan seharusnya tidak lebih buruk.
+> Penjelasan Ayu (JIT dingin setelah restart) masuk akal karena urutannya cocok: run 1 req/detik dijalankan pertama. Tapi
+> itu belum dibuktikan, jadi aku tidak memintanya diperbaiki sekarang. Cukup ditulis sebagai tindak lanjut."*
 
-### 10.15 · Ayu menanggapi
+Ayu menambahkan ke PR bahwa run 1 req/detik adalah run pertama setelah restart (pemanasan 30 detik), dan mencatat pengujian
+ulang dengan pemanasan lebih lama sebagai tindak lanjut. Citra menyetujui. PR punya dua persetujuan.
 
-**Dilakukan.** Ayu memeriksa kode: ada jalur pembatalan invoice yang belum ia sentuh. Ia menambah pengurangan ringkasan di
-jalur itu, dalam transaksi yang sama, lalu menambah satu pembanding untuk invoice batal. Untuk poin 2, ia menjelaskan bahwa
-Flyway menjalankan satu berkas migrasi dalam satu transaksi di PostgreSQL, jadi tidak ada keadaan setengah terisi; ia
-menautkan baris log migrasi sebagai bukti.
+## 10. Bukti dan penutupan
 
-> **Ayu berpikir:** *"Bimo benar, dan aku tidak akan menemukannya sendiri karena aku tidak pernah menguji pembatalan.
-> Ini yang dimaksud 'peninjau memeriksa, bukan sekadar menyetujui'. Untuk poin 2, aku tidak cukup bilang 'aman'; aku
-> tunjukkan buktinya."*
+> **Ayu berpikir:** *"`task evidence` membaca `labs/<lab>/out/summary.json`, tapi `profile.k6.js` di latihan tidak menulis
+> berkas itu. Untuk latihan, bukti utamanya keluaran k6 dan `cmp` yang aku tempel di PR. Skrip lab 20-26 November sudah
+> menulis `summary.json`, jadi di sana `task evidence` berjalan. Aku tulis keterbatasan ini daripada mengarang bukti."*
 
-### 13.00 · Tinjauan Citra
-
-**Dilakukan.** Citra memeriksa batasan kedua yang belum disentuh Bimo: tertinggal paling lama 1 menit. Ia membaca bahwa
-ringkasan ditambah dalam transaksi yang sama dengan invoice, jadi begitu transaksi selesai, kartu sudah benar. Ia menjalankan
-ulang skrip ukur di laptopnya sendiri dan mendapat p95 18 ms (berbeda sedikit dari Ayu karena mesinnya berbeda).
-Ia menyetujui (**Approve**):
-
-```text
-Diperiksa: batasan 1 menit (ringkasan ditambah dalam transaksi yang sama, tidak ada jeda), angka sebelum-sesudah
-memakai skrip yang sama (saya ulang: p95 18 ms di laptop saya), alternatif B ditolak dengan alasan batasan yang benar.
-Tidak diperiksa: beban checkout bersamaan dalam jumlah besar; menurut saya cukup ditulis sebagai tindak lanjut.
-```
-
-> **Citra berpikir:** *"Bimo sudah memeriksa angka dan pembatalan. Kalau aku memeriksa hal yang sama lagi, tinjauanku tidak
-> menambah apa-apa. Aku ambil batasan yang belum disentuh siapa pun, dan aku ulangi pengukurannya di mesinku. Aku juga jujur
-> soal apa yang tidak aku periksa."*
-
-### 15.30 · Bimo menyetujui
-
-Bimo membaca perubahan Ayu, menjalankan pembanding invoice batal, dan menyetujui dengan komentar yang menyebut apa yang ia
-periksa. PR punya dua persetujuan.
-
----
-
-## Hari 5 (Rabu): bukti dan penutupan
-
-### 09.00 · Bukti (Ayu)
-
-**Dilakukan.** Ayu memastikan `git status` bersih, menjalankan pengukuran akhir, lalu `task evidence`. Berkas bukti
-dilampirkan ke PR.
-
-> **Ayu berpikir:** *"Hampir saja aku `git add .` dan ikut meng-commit berkas bukti di folder `out/`. Untung `out/` diabaikan
-> Git, tapi tetap aku pilih berkas satu per satu. Dan bukti dibuat sesudah commit, karena bukti dari pohon kerja yang kotor
-> tidak sah."*
-
-### 09.30 · Komentar penutupan (Ayu, di Issue)
+**Komentar penutupan (Ayu):**
 
 ```markdown
 ## Penutupan
 
-**Akar masalah:** kartu menjumlahkan semua invoice penjual setiap kali dibuka; penjual 1 punya 381 ribu invoice
-(p95 2.410 ms lawan 60 ms untuk penjual kecil). Indeks sudah dipakai, jadi masalahnya volume, bukan pencarian.
+**Akar masalah:** flag `seller.dynamic-thumbnail` menyala; untuk setiap produk di profil (sampai 60),
+`ThumbnailService` membuat gambar 1600x1600 lalu mengecilkannya hanya untuk membaca satu piksel.
+Biayanya CPU aplikasi (sampai 191,6%), bukan database (2 query, masing-masing di bawah 1 ms).
 
 **Sinyal di tiket:**
 | Sinyal | Status | Bukti |
 | --- | --- | --- |
-| Lambat untuk penjual besar | Gejala utama | k6 2.410 ms vs 60 ms |
-| Sejak rilis Jumat | Kebetulan waktu | catatan-rilis-jumat.md: hanya warna dan teks |
-| RAM kurang | Dugaan keliru | memori bebas 60%, CPU database 18% |
-| Read replica | Solusi titipan | replica menjalankan query yang sama |
+| Lambat, sampai beberapa detik | Gejala utama | k6 RATE=1: p50 733,7 ms, p95 2,5 s |
+| Toko dengan produk banyak paling lambat | Gejala utama | 60 produk 1.479 ms, 25 produk 576 ms (rasio 2,6 vs 2,4) |
+| Kemarin cepat, tidak ada rilis kode | Petunjuk perubahan konfigurasi | feature_flag = true |
+| WARN legacy.timeout | Noise | muncul tiap 30 detik, juga saat cepat |
 
-**Batasan dari paket konteks:**
-| Batasan | Sumber (berkas) | Bagaimana dipenuhi |
+**Batasan:**
+| Batasan | Sumber | Bagaimana dipenuhi |
 | --- | --- | --- |
-| Sama persis dengan laporan keuangan | kebijakan-keuangan.md v1.2 poin 1 | Ringkasan berubah dalam transaksi yang sama dengan invoice terbit dan batal; pembanding 5 penjual + 1 checkout + 1 pembatalan sama persis |
-| Tertinggal paling lama 1 menit | kebijakan-keuangan.md v1.2 poin 2 | Tidak ada jeda: ringkasan benar begitu transaksi selesai |
+| Respons tidak berubah (asumsi: flag dinyalakan dengan sengaja) | Selesai bila di Issue | cmp penjual 1, 2, 77 sama persis; URL sama untuk 255 dari 255 warna |
 
-**Alternatif yang dipertimbangkan:** B (cache 10 menit) ditolak karena melanggar batas 1 menit; C (read replica) ditolak
-karena tidak menyentuh penyebab; D (indeks) ditolak karena EXPLAIN menunjukkan indeks sudah dipakai.
+**Alternatif yang dipertimbangkan:** A (matikan flag) mengubah thumbnail di respons; B (cache) tidak
+menghapus biaya pertama; D (paralel) menambah beban CPU yang sudah jenuh. Dipilih C.
 
-**Perbaikan:** PR #12
+**Perbaikan:** PR berisi perubahan ThumbnailService
 
-**Hasil:**
+**Hasil (laptop i5-5250U, skala S, flag menyala):**
 | Metrik | Sebelum | Sesudah |
 | --- | --- | --- |
-| p95 penjual 1 | 2.410 ms | 14 ms |
-| p95 penjual kecil | 60 ms | 12 ms |
-| Query per request | 1 (381 ribu baris dibaca) | 1 (1 baris dibaca) |
+| 2 req/detik: gagal / p95 | 57,8% / 57,5 s | 0% / 28,9 ms |
+| 1 req/detik: p50 / p95 | 733,7 ms / 2,5 s | 23,9 ms / 65,8 ms |
+| CPU aplikasi | sampai 191,6% | paling tinggi 7,1% |
 
-**Bukti:** evidence-<waktu>.md (terlampir di PR #12)
+**Bukti:** keluaran k6, pg_stat_statements, dan cmp di PR. task evidence tidak tersedia untuk latihan.
 
-**Tindak lanjut:** beban checkout bersamaan dalam jumlah besar belum diuji (baris ringkasan penjual yang sama diperbarui
-banyak transaksi); dicatat oleh Citra saat tinjauan.
+**Tindak lanjut:** (1) p99 522 ms di run pertama setelah restart, dugaan JIT dingin, belum dibuktikan;
+(2) siapa dan kapan flag dinyalakan tidak bisa dibuktikan karena feature_flag tidak menyimpan waktu perubahan;
+(3) penjual 77 lebih lambat dari penjual 2 dengan jumlah produk sama, belum dijelaskan; (4) belum diukur di skala M.
 ```
 
-Ayu mengganti label ke `selesai`. Issue tertutup lewat PR (`Closes #`).
+Label diganti ke `selesai`, dan Issue tertutup lewat PR.
 
-### 10.00 · Refleksi (seluruh kelompok, di Issue rencana)
-
-```text
-Refleksi
-Ukuran vs kenyataan: #4900 diperkirakan L, nyata sekitar L ditambah 45 menit untuk isi awal ringkasan yang terlewat di rencana
-Perubahan yang paling berguna: tinjauan Bimo soal invoice batal; tanpa itu angka akan selisih begitu ada pembatalan
-Kami akan mengubah: menulis "data lama" dan "jalur pembatalan" sebagai risiko tetap di setiap rencana perbaikan
-```
-
-> **Ayu berpikir:** *"Kalau dihitung ulang, yang paling menentukan bukan kode, tapi tiga hal: menulis prediksi lalu berani
-> menggugurkannya, membaca batasan sebelum memilih, dan mau menerima tinjauan yang menemukan lubang. p95 14 ms itu hasilnya,
-> bukan pekerjaannya."*
+> **Ayu berpikir:** *"Dua dugaanku salah: database dan 'gambar kecil pasti beda'. Keduanya aku gugurkan dengan ukuran, bukan
+> dengan perasaan. Kalau aku langsung mematikan flag di langkah 3, tiketnya selesai dalam lima menit, dan aku tidak pernah
+> tahu bahwa fiturnya bisa tetap ada dengan biaya 18 ms per 60 produk."*
 
 ---
 
-## Yang patut ditiru dari contoh ini
+## Yang patut ditiru
 
-| Kebiasaan | Di mana terlihat |
+| Kebiasaan | Di mana |
 | --- | --- |
-| Prediksi ditulis sebelum mengukur, lalu digugurkan dengan bukti | 09.25 dan 13.40 |
-| Dugaan keliru dan solusi titipan ditolak dengan angka, bukan dengan opini | 13.00, tabel alternatif |
-| Batasan dari konteks dicatat dengan sumbernya, lalu menentukan pilihan | 09.50, tabel alternatif |
-| Alternatif yang ditolak tetap ditulis, termasuk dugaan awal sendiri | Alternatif D |
-| Rencana diubah dengan pemicu dan apa yang dikorbankan | Senin 10.00 |
-| Peninjau memeriksa hal yang belum diperiksa, dan jujur soal yang tidak diperiksa | Tinjauan Bimo dan Citra |
-| Commit dulu, baru bukti; bukti tidak di-commit | Rabu 09.00 |
-| Hal yang sengaja dibiarkan ditulis sebagai tindak lanjut | Komentar penutupan |
+| Prediksi ditulis lebih dulu, lalu diuji, termasuk yang ternyata salah | Langkah 1, 4, dan 6 |
+| Laju beban diturunkan ketika laptop jenuh, dan alasannya dicatat | Langkah 3 |
+| Lebih dari satu sumber bukti: k6, `pg_stat_statements`, CPU, kode, `curl` | Langkah 3 sampai 5 |
+| Keyakinan yang kuat tetap diuji dengan data ("gambar kecil pasti beda") | Langkah 6 |
+| Argumen "selalu sama" dibuktikan dengan cakupan penuh (255 warna), bukan sampel | Langkah 6 |
+| Hal yang tidak bisa dijelaskan ditulis sebagai ketidakpastian, tidak dibuang | Langkah 5 dan 7 |
+| Klaim dibatasi pada yang terukur ("setara", bukan "lebih cepat") | Langkah 7 |
+| Peninjau memeriksa asumsi dan angka yang janggal, bukan hanya p95 | Langkah 8 dan 9 |
+| Keterbatasan alat ditulis jujur, bukan ditutupi | Langkah 10 |
 
-*Kembali ke: [Bagian 9](materi/09-dari-diagnosis-ke-perbaikan.md) · [Daftar isi](MATERI-DASAR.md)*
+*Kembali ke: [Bagian 9](materi/09-dari-diagnosis-ke-perbaikan.md) · [Bagian 8](materi/08-contoh-pengerjaan-tiket.md) · [Daftar isi](MATERI-DASAR.md)*
