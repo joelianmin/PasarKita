@@ -2,7 +2,7 @@
 
 ## Cara mengerjakan tiket
 
-Setiap tiket adalah satu lab. Kelompok menerima 3-4 tiket, satu untuk setiap anggota sebagai pemilik. Tiket ditulis seperti percakapan sungguhan antara orang-orang di PasarKita, jadi tidak semua pendapat di dalamnya benar. Tugasmu menemukan akar masalah dan membuktikannya, bukan menjalankan saran yang ada di tiket. Materi pendukung: `docs/materi/09-dari-diagnosis-ke-perbaikan.md`. Templat jurnal diagnosis dan daftar asumsi: `docs/templat/JURNAL-DIAGNOSIS.md`.
+Setiap tiket adalah satu lab. Kelompok menerima 3-4 tiket, satu untuk setiap anggota sebagai pemilik. Satu kelompok tidak boleh mengambil PK-201 dan PK-203 sekaligus. Tiket ditulis seperti percakapan sungguhan antara orang-orang di PasarKita, jadi tidak semua pendapat di dalamnya benar. Tugasmu menemukan akar masalah dan membuktikannya, bukan menjalankan saran yang ada di tiket. Materi pendukung: `docs/materi/09-dari-diagnosis-ke-perbaikan.md`. Templat jurnal diagnosis dan daftar asumsi: `docs/templat/JURNAL-DIAGNOSIS.md`.
 
 ### Alur kerja
 
