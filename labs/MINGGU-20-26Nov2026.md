@@ -2,7 +2,7 @@
 
 ## Cara mengerjakan tiket
 
-Setiap tiket adalah satu lab. Kelompok menerima 3-4 tiket, satu untuk setiap anggota sebagai pemilik. Satu kelompok tidak boleh mengambil PK-201 dan PK-203 sekaligus. Tiket ditulis seperti percakapan sungguhan antara orang-orang di PasarKita, jadi tidak semua pendapat di dalamnya benar. Tugasmu menemukan akar masalah dan membuktikannya, bukan menjalankan saran yang ada di tiket. Materi pendukung: `docs/materi/09-dari-diagnosis-ke-perbaikan.md`. Templat jurnal diagnosis dan daftar asumsi: `docs/templat/JURNAL-DIAGNOSIS.md`.
+Setiap tiket adalah satu lab. Setiap anggota memegang tepat satu tiket sebagai pemilik, jadi kelompok beranggota N (satu sampai tujuh orang) mengambil N tiket berbeda dari delapan tiket di bawah. Satu tiket hanya diambil satu orang di satu kelompok, dan satu kelompok tidak boleh mengambil PK-201 dan PK-203 sekaligus. Tiket ditulis seperti percakapan sungguhan antara orang-orang di PasarKita, jadi tidak semua pendapat di dalamnya benar. Tugasmu menemukan akar masalah dan membuktikannya, bukan menjalankan saran yang ada di tiket. Materi pendukung: `docs/materi/09-dari-diagnosis-ke-perbaikan.md`. Templat jurnal diagnosis dan daftar asumsi: `docs/templat/JURNAL-DIAGNOSIS.md`.
 
 ### Alur kerja
 
@@ -11,9 +11,21 @@ Setiap tiket adalah satu lab. Kelompok menerima 3-4 tiket, satu untuk setiap ang
 3. **Triage.** Klasifikasi setiap sinyal di tiket: gejala utama, akibat, kebetulan waktu, noise, dugaan keliru, atau solusi titipan.
 4. **Reproduksi.** Siapkan lab dengan `task lab LAB=<folder lab>`, ukur dengan `task reproduce LAB=<folder lab>` (contoh: `LAB=pk-201`, huruf kecil), dan tulis cara mereproduksi masalahnya yang bisa diulang orang lain: skrip k6, SQL, atau curl (test JUnit hanya bila Docker tersedia).
 5. **Diagnosis dan perbaikan.** Temukan akar masalah dengan alat ukur dari minggu 1, bandingkan minimal dua alternatif, lalu buka PR.
-6. **Penutupan.** Setelah PR disetujui dua anggota, jalankan `task evidence LAB=<folder lab>` dan tutup tiket dengan komentar penutupan.
+6. **Penutupan.** Setelah PR mendapat dua persetujuan (aturan peninjau di bawah), jalankan `task evidence LAB=<folder lab>` dan tutup tiket dengan komentar penutupan.
 
 Target di setiap tiket dihitung relatif terhadap baseline Lab 0 kelompokmu, kecuali disebutkan lain. Tidak ada sesi tanya jawab bisnis: semua batasan ada di paket konteks, dan kamu yang harus menemukannya. Batasan yang terlewat akan ditemukan dua peninjau PR dan pengajar saat membaca komentar penutupanmu, jadi catat tiap batasan beserta sumbernya di daftar asumsi.
+
+### Peninjau PR
+
+Tiap PR butuh **dua persetujuan** sebelum tiket ditutup, dan pemilik tiket tidak boleh menyetujui PR-nya sendiri. Dua persetujuan itu datang dari:
+
+| Anggota kelompok | Peninjau |
+| --- | --- |
+| 3 sampai 7 orang | Dua anggota lain di kelompok |
+| 2 orang | Rekan satu kelompok dan pengajar |
+| 1 orang | Pengajar, menggantikan kedua peninjau |
+
+Peninjau memakai daftar periksa di Bagian 9.7 dan menulis persetujuan sebagai review "Approve" di GitHub, dengan komentar yang menyebut apa yang diperiksa. Bila pengajar dibutuhkan sebagai peninjau, pasang label `review` pada Issue tiketnya setelah PR siap.
 
 ### Label issue
 
@@ -21,7 +33,7 @@ Target di setiap tiket dihitung relatif terhadap baseline Lab 0 kelompokmu, kecu
 | --- | --- |
 | `triage` | Sinyal sedang diklasifikasi dan dugaan sedang disusun |
 | `diagnosis` | Gejala sudah direproduksi; akar masalah sedang dicari |
-| `review` | PR perbaikan sudah dibuka dan menunggu dua reviewer |
+| `review` | PR perbaikan sudah dibuka dan menunggu dua persetujuan |
 | `selesai` | Bukti sudah dibuat dan komentar penutupan sudah ditulis |
 
 ### Template komentar penutupan

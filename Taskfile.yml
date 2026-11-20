@@ -103,7 +103,7 @@ tasks:
           PROFILE: core,observability
       - task: seed
         vars:
-          SCALE: '{{if eq (.LAB | lower) "pk-204" "pk-206"}}L{{else if eq (.LAB | lower) "0" "pk-201" "pk-203" "pk-205"}}M{{else}}S{{end}}'
+          SCALE: '{{if eq (.LAB | lower) "pk-204" "pk-206"}}L{{else if eq (.LAB | lower) "0" "pk-201" "pk-202" "pk-203" "pk-205" "pk-207" "pk-208"}}M{{else}}S{{end}}'
 
   reproduce:
     desc: Jalankan script beban satu lab, contoh LAB=0

@@ -1,7 +1,7 @@
 # PK-205: Daftar invoice penjual besar lambat
 
 > Aturan umum, alur kerja, label Issue, dan templat komentar penutupan ada di [`../MINGGU-20-26Nov2026.md`](../MINGGU-20-26Nov2026.md).
-> Tiket ini hanya satu bagian dari tiga sampai empat tiket kelompokmu.
+> Tiap anggota kelompok memegang satu tiket. Satu tiket hanya diambil satu orang di satu kelompok.
 
 *Folder lab: `labs/pk-205` · Data: skala M*
 
