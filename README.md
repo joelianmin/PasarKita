@@ -46,7 +46,8 @@ dari diagnosis ke perbaikan) beserta referensi.
 Akun contoh: `user1@pasarkita.test` sampai `userN@pasarkita.test`, password `rahasia123`.
 Endpoint keranjang dan checkout memakai header `X-Customer-Id`.
 
-Petunjuk lab ada di [`labs/README.md`](labs/README.md).
+Petunjuk lab ada di [`labs/README.md`](labs/README.md). Repo kelompokmu tidak berubah sendiri saat templat ini
+diperbarui; cara mengambil pembaruan ada di [`docs/PANDUAN-PEMBARUAN.md`](docs/PANDUAN-PEMBARUAN.md).
 
 ## Modul
 

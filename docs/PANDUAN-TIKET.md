@@ -10,6 +10,14 @@ Buat label `tiket` di repo kelompok: **Issues, Labels, New label**, nama `tiket`
 memasang label yang sudah ada, jadi tanpa langkah ini templat tidak bisa menempelkannya.
 Menyiapkan konvensi tim sebelum mulai bekerja adalah kebiasaan yang baik.
 
+Untuk tiket 20-26 November 2026 (`PK-201` sampai `PK-208`), buat juga empat label status dengan cara yang sama:
+`triage`, `diagnosis`, `review`, dan `selesai`. Satu Issue memakai satu label status pada satu waktu, dan
+labelnya diganti mengikuti tahap tiketmu (arti tiap label ada di `labs/MINGGU-20-26Nov2026.md`). Kalau repo kelompokmu
+belum punya folder lab terbaru, ikuti [panduan pembaruan](PANDUAN-PEMBARUAN.md) lebih dulu.
+
+Bila GitHub CLI (`gh`) terpasang dan sudah login, satu perintah per label cukup:
+`gh label create triage`, lalu `diagnosis`, `review`, dan `selesai` dengan cara yang sama.
+
 ## Langkah
 
 1. **Baca tiketnya sampai habis**, lalu tulis ulang dengan kata-katamu sendiri.
