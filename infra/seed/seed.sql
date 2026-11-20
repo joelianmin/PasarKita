@@ -1,4 +1,4 @@
--- Data contoh PasarKita. Dijalankan lewat `task seed SCALE=S|M`.
+-- Data contoh PasarKita. Dijalankan lewat `task seed SCALE=S|M|L`.
 -- Variabel psql: seed, sellers, products, customers, orders.
 \timing on
 

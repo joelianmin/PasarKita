@@ -58,13 +58,16 @@ tasks:
       - '{{.COMPOSE}} run --rm flyway'
 
   seed:
-    desc: Isi data contoh, contoh SCALE=S atau SCALE=M
+    desc: Isi data contoh, contoh SCALE=S, SCALE=M, atau SCALE=L
     vars:
       SCALE: '{{.SCALE | default "S"}}'
-      SELLERS: '{{if eq .SCALE "M"}}2000{{else}}200{{end}}'
-      PRODUCTS: '{{if eq .SCALE "M"}}50000{{else}}5000{{end}}'
-      CUSTOMERS: '{{if eq .SCALE "M"}}200000{{else}}10000{{end}}'
-      ORDERS: '{{if eq .SCALE "M"}}1000000{{else}}50000{{end}}'
+      SELLERS: '{{if eq .SCALE "L"}}20000{{else if eq .SCALE "M"}}2000{{else}}200{{end}}'
+      PRODUCTS: '{{if eq .SCALE "L"}}500000{{else if eq .SCALE "M"}}50000{{else}}5000{{end}}'
+      CUSTOMERS: '{{if eq .SCALE "L"}}2000000{{else if eq .SCALE "M"}}200000{{else}}10000{{end}}'
+      ORDERS: '{{if eq .SCALE "L" "M"}}1000000{{else}}50000{{end}}'
+    preconditions:
+      - sh: '[ "{{.SCALE}}" = "S" ] || [ "{{.SCALE}}" = "M" ] || [ "{{.SCALE}}" = "L" ]'
+        msg: 'SCALE harus S, M, atau L (nilai yang diberikan: "{{.SCALE}}")'
     cmds:
       - task: migrate
       - '{{.COMPOSE}} exec -T postgres psql -U pasarkita -d pasarkita -v ON_ERROR_STOP=1 -v seed=$GROUP_SEED -v sellers={{.SELLERS}} -v products={{.PRODUCTS}} -v customers={{.CUSTOMERS}} -v orders={{.ORDERS}} -f /seed/seed.sql'
@@ -100,7 +103,7 @@ tasks:
           PROFILE: core,observability
       - task: seed
         vars:
-          SCALE: '{{if eq .LAB "0"}}M{{else}}S{{end}}'
+          SCALE: '{{if eq (.LAB | lower) "pk-204" "pk-206"}}L{{else if eq (.LAB | lower) "0" "pk-201" "pk-203" "pk-205"}}M{{else}}S{{end}}'
 
   reproduce:
     desc: Jalankan script beban satu lab, contoh LAB=0
@@ -114,6 +117,7 @@ tasks:
     requires:
       vars: [LAB]
     cmds:
+      - java tools/CekJdk.java
       - java tools/Evidence.java {{.LAB}}
 
   traffic:
@@ -155,7 +159,7 @@ tasks:
       - infra/native/native.sh status
 
   native:seed:
-    desc: Migrasi dan isi data contoh tanpa Docker, contoh SCALE=S atau SCALE=M
+    desc: Migrasi dan isi data contoh tanpa Docker, contoh SCALE=S, SCALE=M, atau SCALE=L
     cmds:
       - infra/native/native.sh seed {{.SCALE | default "S"}}
 

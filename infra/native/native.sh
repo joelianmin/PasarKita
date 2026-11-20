@@ -155,7 +155,12 @@ cmd_migrate() {
 
 cmd_seed() {
   local scale="${1:-S}" s p c o
-  if [ "$scale" = "M" ]; then s=2000; p=50000; c=200000; o=1000000; else s=200; p=5000; c=10000; o=50000; fi
+  case "$scale" in
+    S) s=200;   p=5000;   c=10000;   o=50000;;
+    M) s=2000;  p=50000;  c=200000;  o=1000000;;
+    L) s=20000; p=500000; c=2000000; o=1000000;;
+    *) echo "SCALE harus S, M, atau L (nilai yang diberikan: \"$scale\")" >&2; exit 2;;
+  esac
   # shellcheck disable=SC1091
   . "$ROOT/group.env"
   cmd_migrate
@@ -179,5 +184,5 @@ case "${1:-}" in
   seed) shift; cmd_seed "$@";;
   psql) shift; cmd_psql "$@";;
   reset) cmd_reset;;
-  *) echo "Pemakaian: $0 {up [profil]|down|status|migrate|seed [S|M]|psql|reset}" >&2; exit 2;;
+  *) echo "Pemakaian: $0 {up [profil]|down|status|migrate|seed [S|M|L]|psql|reset}" >&2; exit 2;;
 esac
