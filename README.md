@@ -1,7 +1,7 @@
 # PasarKita – base code minggu 1
 
 Aplikasi modulith Spring Boot untuk lab backend. Versi ini disiapkan untuk minggu 1
-(orientasi dan alat ukur). Masalah untuk lab minggu 2–6 ditambahkan bertahap.
+(orientasi dan alat ukur). Masalah untuk lab berikutnya ditambahkan bertahap.
 
 ## Prasyarat
 
@@ -32,8 +32,9 @@ Tidak bisa memakai Docker (misalnya macOS 12)? Lihat [`infra/native/README.md`](
 untuk menjalankan semua komponen pendukung tanpa Docker (`task native:up`).
 
 Baru di proyek ini? Mulai dari [`docs/MATERI-DASAR.md`](docs/MATERI-DASAR.md): daftar isi
-dan jalur belajar untuk delapan bagian materi (fondasi, lingkungan kerja, memahami sistem,
-mengukur, mutu dan desain, diagnosa dan latihan, menyerahkan hasil, contoh pengerjaan tiket) beserta referensi.
+dan jalur belajar untuk sembilan bagian materi (fondasi, lingkungan kerja, memahami sistem,
+mengukur, mutu dan desain, diagnosa dan latihan, menyerahkan hasil, contoh pengerjaan tiket,
+dari diagnosis ke perbaikan) beserta referensi.
 
 | Alamat | Isi |
 | --- | --- |

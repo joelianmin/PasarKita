@@ -143,7 +143,7 @@ dan tabel baseline.
 ## 7.5 Menulis BASELINE.md
 
 `BASELINE.md` di root repo adalah catatan kondisi awal sistem, pembanding semua perbaikan
-di minggu 2–6. Pakai template dari materi minggu 1 jika ada; kerangka di bawah adalah
+di lab berikutnya. Pakai template dari materi minggu 1 jika ada; kerangka di bawah adalah
 panduan isinya.
 
 ```markdown

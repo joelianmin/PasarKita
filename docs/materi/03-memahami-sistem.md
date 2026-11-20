@@ -69,7 +69,8 @@ kosongkan keranjang. Baca file ini sampai paham sebelum mengukur `POST /api/chec
   Berkas bernama `V1__...sql`, `V2__...sql`, dan seterusnya dijalankan berurutan, sekali
   saja. Jangan mengubah migrasi yang sudah dijalankan; tambahkan versi baru.
 - **Seed** mengisi data contoh. `SCALE=S` untuk latihan ringan, `SCALE=M` (1 juta order)
-  untuk Lab 0 agar masalah skala terlihat. `GROUP_SEED` di `group.env` membuat data tiap
+  untuk Lab 0 agar masalah skala terlihat, dan `SCALE=L` (2 juta pelanggan, 500 ribu produk)
+  untuk lab yang membutuhkan data lebih besar. `GROUP_SEED` di `group.env` membuat data tiap
   kelompok berbeda; jangan diubah sendiri.
 - **Indeks** mempercepat pencarian dengan menghindari pembacaan seluruh tabel. Tanpa indeks
   yang cocok, PostgreSQL melakukan *sequential scan* (baca semua baris). Indeks juga

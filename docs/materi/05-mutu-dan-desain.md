@@ -13,7 +13,7 @@
 
 ## 5.1 Prinsip desain SOLID
 
-SOLID adalah lima pedoman desain kelas agar kode mudah dipahami dan diubah. Lab minggu 2–6
+SOLID adalah lima pedoman desain kelas agar kode mudah dipahami dan diubah. Lab berikutnya
 meminta kamu mengubah kode tanpa merusak bagian lain, jadi kamu perlu bisa menilai
 desainnya. SOLID itu pedoman, bukan hukum: jangan membuat abstraksi tanpa alasan nyata.
 

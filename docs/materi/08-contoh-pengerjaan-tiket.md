@@ -241,4 +241,4 @@ Daftar ini hanya menunjukkan **berkas yang perlu dibaca dan satu pertanyaan penu
 
 ---
 
-*Sebelumnya: [Bagian 7](07-menyerahkan-hasil.md) · [Daftar isi](../MATERI-DASAR.md) · Berikutnya: [Referensi](referensi.md)*
+*Sebelumnya: [Bagian 7](07-menyerahkan-hasil.md) · [Daftar isi](../MATERI-DASAR.md) · Berikutnya: [Bagian 9](09-dari-diagnosis-ke-perbaikan.md)*

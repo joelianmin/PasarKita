@@ -80,7 +80,7 @@ Perintah `task` dari `Taskfile.yml`. Kolom terakhir adalah padanan tanpa Docker 
 | Nyalakan infrastruktur | `task up PROFILE=core,observability` | `task native:up` |
 | Matikan (data tetap) | `task down` | `task native:down` |
 | Matikan dan hapus data | `task reset` | `task native:reset` |
-| Migrasi dan isi data | `task seed SCALE=S` atau `M` | `task native:seed SCALE=S` atau `M` |
+| Migrasi dan isi data | `task seed SCALE=S`, `M`, atau `L` | `task native:seed SCALE=S`, `M`, atau `L` |
 | Siapkan satu lab | `task lab LAB=0` | `task native:up`, lalu `task native:seed SCALE=M` |
 | Jalankan aplikasi | `task app` | `task app` |
 | Buka psql | `task psql` | `task native:psql` |

@@ -1,13 +1,13 @@
 # Materi dasar PasarKita
 
 Bahan minimal agar kamu paham apa yang kamu ukur dan bisa menjalankan lab tanpa tersangkut.
-Materi dibagi menjadi delapan bagian yang disusun menurut urutan kerja, ditambah satu bagian referensi.
+Materi dibagi menjadi sembilan bagian yang disusun menurut urutan kerja, ditambah satu bagian referensi.
 
 ## Cara memakai materi
 
 - **Angka pertama pada nomor bagian adalah nomor berkas.** Contoh: bagian `6.1.3` ada di `materi/06-diagnosa-dan-latihan.md`.
 - Setiap bagian dibuka dengan **tujuan, prasyarat, dan kemampuan yang kamu dapat**, dan ditutup dengan tautan ke bagian sebelum dan sesudahnya.
-- Topik konsep (bagian 1, 3, 4, 5, 6) diakhiri **pertanyaan cek diri** (`> Cek diri: ...`). Jawab dulu sebelum lanjut. Topik prosedural (bagian 2 dan 7) berisi langkah dan perintah yang dicoba langsung.
+- Topik konsep (bagian 1, 3, 4, 5, 6, 9) diakhiri **pertanyaan cek diri** (`> Cek diri: ...`). Jawab dulu sebelum lanjut. Topik prosedural (bagian 2 dan 7) berisi langkah dan perintah yang dicoba langsung.
 - Contoh perintah memakai bash. Di Windows PowerShell 5.1 pakai `curl.exe`, dan ganti `./mvnw` dengan `.\mvnw.cmd`.
 - Pegangan umum: ukur dulu, ubah satu hal, ukur lagi.
 
@@ -23,6 +23,7 @@ Materi dibagi menjadi delapan bagian yang disusun menurut urutan kerja, ditambah
 | [6. Diagnosa dan latihan](materi/06-diagnosa-dan-latihan.md) | Bagaimana menemukan penyebab masalah, dan melatihnya dengan sengaja? | Saat macet, dan untuk berlatih setelah Lab 0 |
 | [7. Menyerahkan hasil](materi/07-menyerahkan-hasil.md) | Bagaimana mengemas hasil menjadi bukti yang sah? | Saat mengumpulkan hasil Lab 0 |
 | [8. Contoh pengerjaan tiket](materi/08-contoh-pengerjaan-tiket.md) | Bagaimana satu tiket dikerjakan dari Issue sampai laporan, dan dari mana membaca kodenya? | Sebelum mengerjakan tiket latihan, dan saat bingung memulai |
+| [9. Dari diagnosis ke perbaikan](materi/09-dari-diagnosis-ke-perbaikan.md) | Bagaimana memilah sinyal di tiket, membaca batasan dari paket konteks, memilih perbaikan, dan menutup tiket? | Sebelum mengerjakan tiket 20–26 Nov 2026, dan saat menutup tiket |
 | [Referensi](materi/referensi.md) | Di mana kodenya? Apa arti istilah ini? Perintah apa yang dipakai? | Kapan saja |
 
 ## Daftar isi lengkap
@@ -82,6 +83,18 @@ Materi dibagi menjadi delapan bagian yang disusun menurut urutan kerja, ditambah
 - 8.5 Mulai membaca dari mana, per tiket
 - 8.6 Jika kamu macet
 
+**[Bagian 9: Dari diagnosis ke perbaikan](materi/09-dari-diagnosis-ke-perbaikan.md)**
+
+- 9.1 Apa yang berubah dari latihan membedah tiket
+- 9.2 Prediksi dulu
+- 9.3 Memilah sinyal di tiket
+- 9.4 Membaca paket konteks
+- 9.5 Membandingkan dua alternatif
+- 9.6 Satu perubahan, satu bukti
+- 9.7 Meninjau PR rekan
+- 9.8 Komentar penutupan
+- 9.9 Jika kamu macet
+
 **[Referensi](materi/referensi.md)**
 
 - R.1 Peta kode
@@ -96,7 +109,8 @@ Materi dibagi menjadi delapan bagian yang disusun menurut urutan kerja, ditambah
 | Sebelum Lab 0 | 1.1, 1.2, 3.1, 3.2, 4.1, 4.2, 4.3 |
 | Saat mengerjakan Lab 0 | 4.2 (cara menjalankan), 6.1 jika macet, 2.7 jika harus mengubah berkas alat, 7.1 sampai 7.6 untuk menyiapkan repo dan mengumpulkan |
 | Mengerjakan tiket latihan (membedah tiket) | 8.1 dulu, lalu 8.4 sebagai contoh, 8.5 untuk tiketmu, 6.1 jika macet |
-| Setelah Lab 0, minggu 2 sampai 6 | 5.1, 5.2, 5.3, lalu 6.2 untuk latihan |
+| Mengerjakan tiket 20–26 Nov 2026 (diagnosis dan perbaikan) | 9.2 sampai 9.5 sebelum mulai, 9.6 sampai 9.8 saat memperbaiki dan menutup, 8.3 dan 6.1 jika macet |
+| Setelah Lab 0, lab berikutnya | 5.1, 5.2, 5.3, lalu 6.2 untuk latihan |
 
 ## Cari berdasarkan masalah
 

@@ -1,7 +1,7 @@
 # Lab 0: Baseline
 
 **Konteks.** Kamu baru bergabung ke tim PasarKita. Sebelum ada yang mengubah apa pun, tim
-butuh catatan kondisi sistem saat ini sebagai pembanding semua perbaikan di minggu 2–6.
+butuh catatan kondisi sistem saat ini sebagai pembanding semua perbaikan di lab berikutnya.
 
 **Tugas.** Ukur latensi, error, beban database, dan pemakaian sumber daya untuk delapan
 endpoint utama, lalu catat minimal tiga hal yang mencurigakan. Jangan memperbaiki apa pun.
