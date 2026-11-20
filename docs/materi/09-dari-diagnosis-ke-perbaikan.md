@@ -12,6 +12,7 @@
 > - menulis komentar penutupan yang bisa diperiksa orang lain
 >
 > Seluruh contoh di bagian ini **rekaan**: tiket #4900 dan dokumennya tidak ada di PasarKita dan tidak sama dengan tiket 20–26 Nov 2026.
+> Pengerjaan #4900 dari awal sampai ditutup, lengkap dengan apa yang dilakukan dan dipikirkan pemilik tiket dan dua peninjau: [`../CONTOH-PERBAIKAN-TIKET.md`](../CONTOH-PERBAIKAN-TIKET.md).
 
 ---
 
@@ -60,7 +61,7 @@ Kesalahan umum: menganggap "yang paling dulu disebut" atau "yang disebut orang p
 
 ### Contoh (rekaan): tiket #4900
 
-> **Dewi, Dukungan Penjual (Senin, 10.00):** Penjual besar bilang kartu "Penjualan hari ini" di dasbor mereka butuh dua sampai tiga detik. Penjual kecil tidak mengeluh.
+> **Dewi, Dukungan Penjual (Senin, 10.00):** Penjual besar bilang kartu "Total penjualan" di dasbor mereka butuh dua sampai tiga detik. Penjual kecil tidak mengeluh.
 >
 > **Pak Hadi, Senior Developer (10.20):** Pasti karena RAM server kurang. Naikkan saja ke 32 GB, atau pasang read replica.
 >
