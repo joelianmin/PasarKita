@@ -40,6 +40,6 @@ Dugaan boleh ditulis, tetapi beri tanda.
 - Kapan harus push, dan cara agar commit-mu tertaut ke akunmu: [panduan push](PANDUAN-PUSH.md).
 - Pada Lab 0 dan latihan membedah tiket, tugasnya mengukur dan mencatat. Jangan memperbaiki
   kode.
-- Jangan membagikan `GROUP_SEED` di luar kelompok (grup WA kelas, repo publik). Di repo privat kelompok boleh.
+- Jangan membagikan `GROUP_SEED` di luar kelompok (grup WA kelas, repo publik). Di repo privat kelompok boleh. Teman dari kelompok lain yang kamu undang sebagai peninjau PR (kelompok satu atau dua orang) ikut melihat `group.env`; mereka dilarang menyebarkannya.
 - Penanggung jawab per tiket dipakai untuk melihat pembagian kerja. Kalau satu laptop dipakai
   bersama, tulis di Issue siapa yang mengetik dan siapa yang menganalisis.

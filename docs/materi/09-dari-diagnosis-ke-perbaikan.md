@@ -23,7 +23,7 @@
 | Aturan | Jangan memperbaiki apa pun | Perbaiki, dan buktikan hasilnya |
 | Konteks | Tiket saja | Tiket **dan paket konteks** (notulen, thread, kebijakan) |
 | Pendapat di tiket | Bukan masalah | Sebagian keliru, dan harus kamu pilah |
-| Peninjau | Pengajar | Dua persetujuan: rekan kelompok, dibantu pengajar bila kelompok kecil |
+| Peninjau | Pengajar | Dua persetujuan: rekan kelompok, atau teman dari kelompok lain bila kelompokmu kecil |
 
 Pegangan umum tidak berubah: **ukur dulu, ubah satu hal, ukur lagi.** Yang bertambah adalah pertanyaan sebelum mengubah: *apa yang boleh dan tidak boleh diubah, dan mengapa pilihanku lebih baik daripada alternatifnya?*
 
@@ -149,7 +149,7 @@ Pilihan: **A**, dengan satu syarat yang harus dibuktikan di PR (angka kartu sama
 
 ## 9.7 Meninjau PR rekan
 
-Tiap PR mendapat dua persetujuan sebelum ditutup. Pemilik tiket tidak menyetujui PR-nya sendiri. Kelompok tiga orang atau lebih memakai dua anggota lain, kelompok dua orang memakai rekan dan pengajar, dan kelompok satu orang memakai pengajar (aturan lengkap di `labs/MINGGU-20-26Nov2026.md`). Peninjau memeriksa, bukan sekadar menyetujui:
+Tiap PR mendapat dua persetujuan sebelum ditutup. Pemilik tiket tidak menyetujui PR-nya sendiri. Kelompok tiga orang atau lebih memakai dua anggota lain, kelompok dua orang memakai rekan dan satu teman dari kelompok lain, dan kelompok satu orang memakai dua teman dari kelompok lain (aturan lengkap, termasuk cara mengundang peninjau, di `labs/MINGGU-20-26Nov2026.md`). Peninjau memeriksa, bukan sekadar menyetujui:
 
 - [ ] Akar masalah dibuktikan dengan angka dari lebih dari satu sumber
 - [ ] Setiap batasan di daftar asumsi punya sumber yang bisa dibuka, dan perbaikan memenuhinya

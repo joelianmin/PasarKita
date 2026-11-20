@@ -22,10 +22,17 @@ Tiap PR butuh **dua persetujuan** sebelum tiket ditutup, dan pemilik tiket tidak
 | Anggota kelompok | Peninjau |
 | --- | --- |
 | 3 sampai 7 orang | Dua anggota lain di kelompok |
-| 2 orang | Rekan satu kelompok dan pengajar |
-| 1 orang | Pengajar, menggantikan kedua peninjau |
+| 2 orang | Rekan satu kelompok dan **satu teman dari kelompok lain** |
+| 1 orang | **Dua teman dari kelompok lain** |
 
-Peninjau memakai daftar periksa di Bagian 9.7 dan menulis persetujuan sebagai review "Approve" di GitHub, dengan komentar yang menyebut apa yang diperiksa. Bila pengajar dibutuhkan sebagai peninjau, pasang label `review` pada Issue tiketnya setelah PR siap.
+Peninjau memakai daftar periksa di Bagian 9.7 dan menulis persetujuan sebagai review "Approve" di GitHub, dengan komentar yang menyebut apa yang diperiksa.
+
+**Mencari teman peninjau (kelompok satu atau dua orang).**
+
+- Carilah teman dari kelompok lain di awal sesi, dan tawarkan **tukar tinjau**: kamu meninjau PR mereka, mereka meninjau PR-mu. Kelompok kecil lain biasanya paling mudah diajak.
+- Undang temanmu sebagai collaborator dengan akses **Read** di repo kelompokmu (Settings, Collaborators). Peninjau hanya membaca dan memberi review. Repo privat memuat `group.env`, jadi peninjau dari luar kelompok **tidak boleh membagikan isi repo**, termasuk `GROUP_SEED`, kepada siapa pun.
+- Dua peninjau dari luar kelompok sebaiknya orang yang berbeda dan tidak memegang tiket yang sama denganmu.
+- Bila sampai **Selasa 24 November 2026, 18.00 WIB** kamu belum menemukan teman, pasang label `review` pada Issue tiketmu. Pengajar akan menggantikan peninjau yang kurang, supaya PR-mu tidak tertahan.
 
 ### Label issue
 
