@@ -20,6 +20,10 @@ repo kelompok: rencana sesi, diagnosis tiket **#4821**, mengambil pembaruan temp
 | 3 | Mengambil pembaruan templat | [PR #4](https://github.com/joelianmin/PasarKitaGood/pull/4) |
 | 4 | Perbaikan PK-200 | [Issue #5](https://github.com/joelianmin/PasarKitaGood/issues/5), [PR #6](https://github.com/joelianmin/PasarKitaGood/pull/6), [`JURNAL.md`](https://github.com/joelianmin/PasarKitaGood/blob/main/labs/pk-200/JURNAL.md) |
 
+Urutan waktu lengkap semua pemangku kepentingan (anggota kelompok, pelapor, Product, CDN, Platform), dari dokumen
+konteks sampai sesudah penutupan: [`KRONOLOGI.md`](https://github.com/joelianmin/PasarKitaGood/blob/main/KRONOLOGI.md).
+Tindakan dan angkanya nyata; pikiran tokoh tiket dan paket konteks adalah fiksi yang masuk akal dan ditandai *(fiktif)*.
+
 ---
 
 ## 1. Rencana sesi (Issue #1)
