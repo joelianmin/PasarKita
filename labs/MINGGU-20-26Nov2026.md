@@ -2,7 +2,7 @@
 
 ## Cara mengerjakan tiket
 
-Setiap tiket adalah satu lab. Setiap anggota memegang tepat satu tiket sebagai pemilik, jadi kelompok beranggota N (satu sampai tujuh orang) mengambil N tiket berbeda dari delapan tiket di bawah. Satu tiket hanya diambil satu orang di satu kelompok, dan satu kelompok tidak boleh mengambil PK-201 dan PK-203 sekaligus. Tiket ditulis seperti percakapan sungguhan antara orang-orang di PasarKita, jadi tidak semua pendapat di dalamnya benar. Tugasmu menemukan akar masalah dan membuktikannya, bukan menjalankan saran yang ada di tiket. Materi pendukung: `docs/materi/09-dari-diagnosis-ke-perbaikan.md`, dan contoh satu tiket dari awal sampai ditutup: `docs/CONTOH-PERBAIKAN-TIKET.md`. Templat jurnal diagnosis dan daftar asumsi: `docs/templat/JURNAL-DIAGNOSIS.md`.
+Setiap tiket adalah satu lab. Setiap anggota memegang tepat satu tiket sebagai pemilik, jadi kelompok beranggota N (satu sampai tujuh orang) mengambil N tiket berbeda dari delapan tiket PK-201 sampai PK-208 di bawah. PK-200 adalah tiket contoh yang sudah dikerjakan dari awal sampai ditutup di repo https://github.com/joelianmin/PasarKitaGood, dan tidak dipilih kelompok. Satu tiket hanya diambil satu orang di satu kelompok, dan satu kelompok tidak boleh mengambil PK-201 dan PK-203 sekaligus. Tiket ditulis seperti percakapan sungguhan antara orang-orang di PasarKita, jadi tidak semua pendapat di dalamnya benar. Tugasmu menemukan akar masalah dan membuktikannya, bukan menjalankan saran yang ada di tiket. Materi pendukung: `docs/materi/09-dari-diagnosis-ke-perbaikan.md`, dan contoh satu tiket dari awal sampai ditutup: `docs/CONTOH-PERBAIKAN-TIKET.md`. Templat jurnal diagnosis dan daftar asumsi: `docs/templat/JURNAL-DIAGNOSIS.md`.
 
 ### Alur kerja
 

@@ -11,8 +11,8 @@
 > - membandingkan dua alternatif perbaikan dengan kriteria yang sama
 > - menulis komentar penutupan yang bisa diperiksa orang lain
 >
-> Seluruh contoh di bagian ini **rekaan**: tiket #4900 dan dokumennya tidak ada di PasarKita dan tidak sama dengan tiket 20–26 Nov 2026.
-> Contoh nyata satu tiket dari awal sampai ditutup (tiket #4821, diukur sungguhan), lengkap dengan apa yang dilakukan dan dipikirkan pemilik tiket dan dua peninjau: [`../CONTOH-PERBAIKAN-TIKET.md`](../CONTOH-PERBAIKAN-TIKET.md).
+> Contoh di bagian ini memakai tiket nyata **#4821** (pemanasan yang sudah kamu diagnosis). Angkanya diukur sungguhan pada 20 November 2026 di laptop i5-5250U (2 core), RAM 8 GB, tanpa Docker, data skala S. Angkamu akan berbeda; polanya yang penting. Kasusnya berbeda dari tiket 20–26 Nov 2026.
+> Pengerjaan #4821 dari awal sampai ditutup, lengkap dengan apa yang dilakukan dan dipikirkan pemilik tiket dan dua peninjau: [`../CONTOH-PERBAIKAN-TIKET.md`](../CONTOH-PERBAIKAN-TIKET.md).
 
 ---
 
@@ -59,24 +59,22 @@ Setiap kalimat di tiket adalah **sinyal**, tetapi sinyal tidak sama nilainya. Be
 
 Kesalahan umum: menganggap "yang paling dulu disebut" atau "yang disebut orang paling senior" sebagai penyebab. Urutan di tiket tidak mengandung informasi tentang penyebab.
 
-### Contoh (rekaan): tiket #4900
+### Contoh: tiket #4821
 
-> **Dewi, Dukungan Penjual (Senin, 10.00):** Penjual besar bilang kartu "Total penjualan" di dasbor mereka butuh dua sampai tiga detik. Penjual kecil tidak mengeluh.
->
-> **Pak Hadi, Senior Developer (10.20):** Pasti karena RAM server kurang. Naikkan saja ke 32 GB, atau pasang read replica.
->
-> **Rina, Product (10.35):** Mulai lambat sejak rilis hari Jumat.
+Teks tiket (dari `labs/latihan/TIKET.md`, diringkas): halaman profil toko terasa sangat lama, sampai beberapa detik; kemarin masih cepat; keluhan paling banyak dari toko yang produknya banyak; halaman lain tidak dikeluhkan; tidak ada rilis kode hari ini, tetapi belum bisa dipastikan apakah ada perubahan konfigurasi.
 
-Hasil ukur yang kamu kumpulkan: p95 kartu 2,4 detik untuk penjual terbesar dan 60 ms untuk penjual kecil; CPU database 18%; memori bebas 60%; log memuat `WARN header X-Legacy deprecated` setiap menit.
+Hasil ukur (kondisi latihan menyala, `RATE=1`, 3 menit): p50 733,7 ms, p95 2,5 s. Saat kondisi mati: p50 17,9 ms, p95 56,3 ms. Database: dua query per request, masing-masing di bawah 1 ms. CPU proses aplikasi sampai 191,6%. Log memuat `WARN Property 'pasarkita.legacy.timeout' is deprecated` tiap 30 detik.
 
 | Sinyal | Kategori | Alasan |
 | --- | --- | --- |
-| Kartu lambat untuk penjual besar, tidak untuk penjual kecil | Gejala utama | Terukur, bisa direproduksi, selektif |
-| Antrean keluhan di Dukungan | Akibat | Ada karena gejala di atas |
-| "Mulai lambat sejak rilis Jumat" | Kebetulan waktu | Catatan rilis hanya mengubah warna tombol dan teks bantuan, tidak menyentuh jalur ini |
-| "RAM server kurang" | Dugaan keliru | Memori bebas 60% dan CPU database 18% |
-| "Pasang read replica" | Solusi titipan | Tidak ada bukti penyebab; bila masalahnya di cara menghitung, replica menyalin masalah itu |
-| WARN header deprecated tiap menit | Noise | Muncul juga saat sistem sehat |
+| Profil lambat, sampai beberapa detik | Gejala utama | Terukur dan bisa direproduksi dengan `labs/latihan/profile.k6.js` |
+| Toko dengan produk banyak paling lambat | Gejala utama (selektif) | Penjual 1 (60 produk tampil) median 1.479 ms, penjual 2 (25 produk) 576 ms: sebanding jumlah produk |
+| CPU aplikasi sampai 191,6% | Akibat | Muncul karena pekerjaan per produk; turun ke paling tinggi 7,1% setelah perbaikan |
+| "Kemarin masih cepat", tidak ada rilis kode | **Bukan** kebetulan waktu | Tiket sendiri menyebut kemungkinan perubahan konfigurasi, dan flag `seller.dynamic-thumbnail` memang menyala |
+| "Pasti database lambat" (dugaan yang sering muncul di laporan latihan) | Dugaan keliru | Dua query, masing-masing di bawah 1 ms; hanya satu koneksi aktif saat beban |
+| WARN `legacy.timeout` tiap 30 detik | Noise | Muncul juga saat profil cepat |
+
+#4821 tidak memuat solusi titipan. Tiket 20–26 Nov 2026 hampir selalu memuatnya, biasanya dari orang yang terdengar berwenang.
 
 Perhatikan: mengabaikan sinyal bukan berarti menghapusnya. Kategori dan alasannya ditulis, agar peninjau bisa tidak setuju dengan alasan yang terlihat.
 
@@ -88,10 +86,10 @@ Paket konteks adalah dokumen bisnis yang menyertai tiket. Isinya bercampur: ada 
 
 | Jenis | Ciri | Contoh |
 | --- | --- | --- |
-| **Batasan keras** | Kebijakan, kontrak, SLA, keputusan resmi; melanggarnya berarti perbaikanmu ditolak | "Angka dasbor harus sama persis dengan laporan keuangan" |
-| **Konteks** | Menjelaskan situasi tanpa melarang apa pun | "Invoice penjual terbesar naik tiga kali lipat dalam tiga bulan" |
-| **Pendapat** | Usulan seseorang, bisa benar bisa tidak | "Naikkan RAM" |
-| **Tidak relevan** | Benar, tetapi tidak menyentuh tiketmu | Jadwal on-call akhir tahun |
+| **Batasan keras** | Kebijakan, kontrak, SLA, keputusan resmi; melanggarnya berarti perbaikanmu ditolak | "Jangan mengubah pengaturan layanan tiruan" (#4827, `labs/latihan/TIKET.md`) |
+| **Konteks** | Menjelaskan situasi tanpa melarang apa pun | "Keluhan paling banyak datang dari toko yang produknya banyak" (#4821) |
+| **Pendapat** | Usulan atau dugaan seseorang, bisa benar bisa tidak | "Pasti database lambat" |
+| **Tidak relevan** | Benar, tetapi tidak menyentuh tiketmu | WARN `legacy.timeout` di log |
 
 Cara membacanya:
 
@@ -101,14 +99,18 @@ Cara membacanya:
 4. **Perhatikan apa yang tidak disebut.** Batasan yang hanya muncul di satu kalimat di tengah dokumen tetap batasan.
 5. **Jangan mengambil batasan dari ingatan.** Tulis sumbernya, agar peninjau bisa membukanya.
 
-### Lanjutan contoh #4900
+### Lanjutan contoh #4821
 
-| Batasan | Sumber | Jenis | Dampak |
+#4821 tidak punya paket konteks, jadi daftar asumsinya diambil dari teks tiket, petunjuk lab, dan skema database. Tiket 20–26 Nov 2026 punya paket konteks, dan sumber utamamu ada di sana.
+
+| Batasan atau asumsi | Sumber | Jenis | Dampak |
 | --- | --- | --- | --- |
-| Angka sama persis dengan laporan keuangan | `kebijakan-keuangan.md` v1.2 | Keras | Perbaikan harus bisa dibuktikan menghasilkan angka yang sama |
-| Tampilan tidak boleh tertinggal lebih dari 1 menit | `kebijakan-keuangan.md` v1.2 | Keras | Cache beberapa menit tidak boleh |
-| Invoice penjual terbesar naik 3 kali dalam 3 bulan | `tren-penjual.md` | Konteks | Masalah akan memburuk bila dibiarkan |
-| "Naikkan RAM" | Thread Pak Hadi | Pendapat | Tidak mengikat; sudah digugurkan oleh ukuran memori |
+| Waktu di tiket dalam WIB, Grafana memakai UTC | Catatan #4821 di `labs/latihan/TIKET.md`, langkah 4 `labs/latihan/LAB.md` | Keras (cara membaca bukti) | Jam dicocokkan sebelum menyimpulkan |
+| Tidak ada rilis kode; konfigurasi mungkin berubah | Teks #4821 | Konteks | Mengarahkan ke tabel `feature_flag` |
+| `feature_flag` hanya menyimpan `name` dan `enabled` | `V1__skema_awal.sql` | Konteks (keterbatasan) | Jam perubahan flag tidak bisa dibuktikan dari database |
+| Respons profil tidak boleh berubah selama flag menyala | Asumsi pemilik tiket, ditulis di "Selesai bila" | Asumsi | Mematikan flag ditolak karena mengubah `thumbnail` di respons |
+
+Asumsi tanpa dokumen sah, asal ditulis sebagai asumsi, beserta alasannya, supaya peninjau bisa membantahnya.
 
 ---
 
@@ -124,15 +126,18 @@ Kriteria yang sama untuk setiap alternatif:
 4. **Bisa dibatalkan?** Seberapa mudah mundur bila ternyata keliru.
 5. **Efek ke pihak lain.** Pengguna lain, tim lain, kontrak yang sudah ada.
 
-### Lanjutan contoh #4900
+### Lanjutan contoh #4821
 
-| Alternatif | Akar masalah | Batasan | Biaya dan risiko | Bisa dibatalkan |
+Penyebab yang terbukti: dengan flag menyala, `ThumbnailService` membuat gambar 1600 x 1600 lalu mengecilkannya untuk **setiap produk** (sampai 60 per request), hanya untuk membaca satu piksel.
+
+| Alternatif | Akar masalah | Batasan (respons tidak berubah) | Biaya dan risiko | Bisa dibatalkan |
 | --- | --- | --- | --- | --- |
-| **A.** Tabel ringkasan harian, diperbarui saat invoice terbit | Ya: kartu tidak lagi menjumlahkan ratusan ribu baris tiap dibuka | Terpenuhi bila ringkasan selalu cocok dengan invoice (perlu dibuktikan) | Migrasi dan menjaga konsistensi | Sedang |
-| **B.** Cache 10 menit di aplikasi | Menutupi | **Melanggar** batas 1 menit | Angka basi | Mudah |
-| **C.** Read replica | Tidak | Replika bisa tertinggal, berisiko melanggar batas 1 menit | Biaya infrastruktur, sulit dibatalkan | Sulit |
+| **A.** Matikan flag | Menghindari, tidak memperbaiki | **Melanggar**: `thumbnail` kembali ke `/images/<id>.jpg` | Keputusan produk, bukan keputusan teknis | Mudah |
+| **B.** Simpan hasil per produk | Sebagian: tiap produk tetap mahal sekali | Terpenuhi | Request pertama tetap lambat; memori bertambah sebanding jumlah produk | Mudah |
+| **C.** Buat gambar langsung 200 x 200 | Ya: pekerjaan mahal dihapus | Terpenuhi, **setelah diuji**: URL sama untuk 255 dari 255 kemungkinan warna | Tanpa state; 60 thumbnail 18 ms lawan 1.007 ms | Mudah |
+| **D.** Buat 60 gambar secara paralel | Tidak: total CPU sama | Terpenuhi | CPU sudah sampai 191,6%; paralel memperburuk saat beban | Mudah |
 
-Pilihan: **A**, dengan satu syarat yang harus dibuktikan di PR (angka kartu sama dengan jumlah invoice untuk beberapa penjual). B dan C ditolak dengan alasan tertulis. Menolak alternatif dengan alasan yang bisa diperiksa sama bernilainya dengan memilih satu.
+Pilihan: **C**. Sebelum diuji, pemilik tiket menduga C pasti mengubah URL dan hampir menolaknya. Dugaan itu salah, dan baru ketahuan karena diuji. Menolak atau menerima alternatif dengan alasan yang bisa diperiksa sama bernilainya dengan memilih satu.
 
 > Alternatif "tidak melakukan apa-apa" juga sah bila buktimu menunjukkan tidak ada masalah. Tulis alasannya.
 
@@ -170,7 +175,7 @@ Komentar penutupan memakai templat di `labs/MINGGU-20-26Nov2026.md`. Beda yang l
 
 | Bagian | Lemah | Kuat |
 | --- | --- | --- |
-| Akar masalah | "Query lambat" | "Kartu menjumlahkan semua invoice penjual tiap dibuka; penjual terbesar punya ratusan ribu baris (p95 2,4 detik, 60 ms untuk penjual kecil)" |
+| Akar masalah | "Gambarnya berat" | "Flag `seller.dynamic-thumbnail` menyala; untuk tiap produk (sampai 60) aplikasi membuat gambar 1600 x 1600 hanya untuk membaca satu piksel. CPU aplikasi sampai 191,6%, database dua query di bawah 1 ms (p50 733,7 ms pada 1 req/detik)" |
 | Sinyal | Daftar tanpa alasan | Tabel kategori dengan alasan dan bukti per baris |
 | Batasan | "Sudah dipenuhi" | Tabel: batasan, berkas sumber, cara dipenuhi |
 | Alternatif | "Cache juga bisa" | Dua atau lebih alternatif, dengan alasan menolak yang merujuk batasan |

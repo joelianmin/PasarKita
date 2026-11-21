@@ -4,7 +4,7 @@
 | --- | --- | --- | --- | --- |
 | Lab 0: Baseline | [`0/LAB.md`](0/LAB.md) | [`0/reproduce.k6.js`](0/reproduce.k6.js) | Skala M | Tersedia |
 | Latihan: membedah tiket | [`latihan/LAB.md`](latihan/LAB.md) | [`latihan/profile.k6.js`](latihan/profile.k6.js) | Skala S | Tersedia |
-| 20–26 Nov 2026: akses data (`pk-201` sampai `pk-208`) | [`MINGGU-20-26Nov2026.md`](MINGGU-20-26Nov2026.md), `LAB.md` di tiap folder | `pk-20x/reproduce.k6.js` | M, L untuk `pk-204` dan `pk-206` | Disiapkan |
+| 20–26 Nov 2026: akses data (`pk-201` sampai `pk-208`, contoh `pk-200`) | [`MINGGU-20-26Nov2026.md`](MINGGU-20-26Nov2026.md), `LAB.md` di tiap folder | `pk-20x/reproduce.k6.js` | M, L untuk `pk-204` dan `pk-206` | Disiapkan |
 | Lab berikutnya | - | - | - | Ditambahkan bertahap |
 
 Setiap lab punya folder sendiri berisi `LAB.md` (petunjuk), script k6, dan `out/` (hasil
