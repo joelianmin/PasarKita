@@ -11,8 +11,8 @@
 > - membandingkan dua alternatif perbaikan dengan kriteria yang sama
 > - menulis komentar penutupan yang bisa diperiksa orang lain
 >
-> Contoh di bagian ini memakai tiket nyata **#4821** (pemanasan yang sudah kamu diagnosis). Angkanya diukur sungguhan pada 20 November 2026 di laptop i5-5250U (2 core), RAM 8 GB, tanpa Docker, data skala S. Angkamu akan berbeda; polanya yang penting. Kasusnya berbeda dari tiket 20–26 Nov 2026.
-> Pengerjaan #4821 dari awal sampai ditutup, lengkap dengan apa yang dilakukan dan dipikirkan pemilik tiket dan dua peninjau: [`../CONTOH-PERBAIKAN-TIKET.md`](../CONTOH-PERBAIKAN-TIKET.md).
+> Contoh di bagian ini memakai tiket nyata **#4821** (pemanasan yang sudah kamu diagnosis). Angkanya diukur sungguhan pada 20 dan 21 November 2026 di laptop i5-5250U (2 core), RAM 8 GB, tanpa Docker, data skala S, dan semuanya bisa kamu periksa di repo contoh [PasarKitaGood](https://github.com/joelianmin/PasarKitaGood). Angkamu akan berbeda; polanya yang penting. Kasusnya berbeda dari tiket 20–26 Nov 2026.
+> Pengerjaan #4821 (diagnosis) dan tiket contoh **PK-200** (perbaikannya) dari awal sampai ditutup, lengkap dengan apa yang dilakukan dan dipikirkan pemilik tiket dan dua peninjau: [`../CONTOH-PERBAIKAN-TIKET.md`](../CONTOH-PERBAIKAN-TIKET.md).
 
 ---
 
@@ -63,13 +63,13 @@ Kesalahan umum: menganggap "yang paling dulu disebut" atau "yang disebut orang p
 
 Teks tiket (dari `labs/latihan/TIKET.md`, diringkas): halaman profil toko terasa sangat lama, sampai beberapa detik; kemarin masih cepat; keluhan paling banyak dari toko yang produknya banyak; halaman lain tidak dikeluhkan; tidak ada rilis kode hari ini, tetapi belum bisa dipastikan apakah ada perubahan konfigurasi.
 
-Hasil ukur (kondisi latihan menyala, `RATE=1`, 3 menit): p50 733,7 ms, p95 2,5 s. Saat kondisi mati: p50 17,9 ms, p95 56,3 ms. Database: dua query per request, masing-masing di bawah 1 ms. CPU proses aplikasi sampai 191,6%. Log memuat `WARN Property 'pasarkita.legacy.timeout' is deprecated` tiap 30 detik.
+Hasil ukur (kondisi latihan menyala, `RATE=1`, 3 menit): p50 613 ms, p95 1,67 s. Saat kondisi mati (2 req/detik): p50 11,4 ms, p95 18,8 ms. Database: dua query per request, masing-masing di bawah 1 ms. CPU proses aplikasi (`ps`, per core) 62 sampai 93% pada 1 req/detik dan sampai 339,5% pada 2 req/detik. Log memuat `WARN Property 'pasarkita.legacy.timeout' is deprecated` tiap 30 detik.
 
 | Sinyal | Kategori | Alasan |
 | --- | --- | --- |
 | Profil lambat, sampai beberapa detik | Gejala utama | Terukur dan bisa direproduksi dengan `labs/latihan/profile.k6.js` |
-| Toko dengan produk banyak paling lambat | Gejala utama (selektif) | Penjual 1 (60 produk tampil) median 1.479 ms, penjual 2 (25 produk) 576 ms: sebanding jumlah produk |
-| CPU aplikasi sampai 191,6% | Akibat | Muncul karena pekerjaan per produk; turun ke paling tinggi 7,1% setelah perbaikan |
+| Toko dengan produk banyak paling lambat | Gejala utama (selektif) | Penjual 1 (60 produk tampil) median 1.403 ms, penjual 2 dan 77 (25 produk) 665 dan 592 ms: kira-kira sebanding jumlah produk |
+| CPU aplikasi sampai 339,5% (per core) | Akibat | Muncul karena pekerjaan per produk; turun ke paling tinggi 9,3% setelah perbaikan (PK-200) |
 | "Kemarin masih cepat", tidak ada rilis kode | **Bukan** kebetulan waktu | Tiket sendiri menyebut kemungkinan perubahan konfigurasi, dan flag `seller.dynamic-thumbnail` memang menyala |
 | "Pasti database lambat" (dugaan yang sering muncul di laporan latihan) | Dugaan keliru | Dua query, masing-masing di bawah 1 ms; hanya satu koneksi aktif saat beban |
 | WARN `legacy.timeout` tiap 30 detik | Noise | Muncul juga saat profil cepat |
@@ -101,7 +101,7 @@ Cara membacanya:
 
 ### Lanjutan contoh #4821
 
-#4821 tidak punya paket konteks, jadi daftar asumsinya diambil dari teks tiket, petunjuk lab, dan skema database. Tiket 20–26 Nov 2026 punya paket konteks, dan sumber utamamu ada di sana.
+#4821 tidak punya paket konteks, jadi daftar asumsinya diambil dari teks tiket, petunjuk lab, dan skema database. Tiket 20–26 Nov 2026 punya paket konteks, dan sumber utamamu ada di sana. Tiket perbaikannya, **PK-200**, juga punya paket konteks (`labs/pk-200/konteks/`); daftar asumsi yang diisi darinya ada di jurnal PK-200 di repo [PasarKitaGood](https://github.com/joelianmin/PasarKitaGood/blob/main/labs/pk-200/JURNAL.md).
 
 | Batasan atau asumsi | Sumber | Jenis | Dampak |
 | --- | --- | --- | --- |
@@ -134,8 +134,8 @@ Penyebab yang terbukti: dengan flag menyala, `ThumbnailService` membuat gambar 1
 | --- | --- | --- | --- | --- |
 | **A.** Matikan flag | Menghindari, tidak memperbaiki | **Melanggar**: `thumbnail` kembali ke `/images/<id>.jpg` | Keputusan produk, bukan keputusan teknis | Mudah |
 | **B.** Simpan hasil per produk | Sebagian: tiap produk tetap mahal sekali | Terpenuhi | Request pertama tetap lambat; memori bertambah sebanding jumlah produk | Mudah |
-| **C.** Buat gambar langsung 200 x 200 | Ya: pekerjaan mahal dihapus | Terpenuhi, **setelah diuji**: URL sama untuk 255 dari 255 kemungkinan warna | Tanpa state; 60 thumbnail 18 ms lawan 1.007 ms | Mudah |
-| **D.** Buat 60 gambar secara paralel | Tidak: total CPU sama | Terpenuhi | CPU sudah sampai 191,6%; paralel memperburuk saat beban | Mudah |
+| **C.** Buat gambar langsung 200 x 200 | Ya: pekerjaan mahal dihapus | Terpenuhi, **setelah diuji**: URL sama untuk 255 dari 255 kemungkinan warna | Tanpa state; 60 thumbnail 16 ms lawan 934 ms | Mudah |
+| **D.** Buat 60 gambar secara paralel | Tidak: total CPU sama | Terpenuhi | CPU sudah sampai 339,5% (per core); paralel memperburuk saat beban | Mudah |
 
 Pilihan: **C**. Sebelum diuji, pemilik tiket menduga C pasti mengubah URL dan hampir menolaknya. Dugaan itu salah, dan baru ketahuan karena diuji. Menolak atau menerima alternatif dengan alasan yang bisa diperiksa sama bernilainya dengan memilih satu.
 
@@ -175,7 +175,7 @@ Komentar penutupan memakai templat di `labs/MINGGU-20-26Nov2026.md`. Beda yang l
 
 | Bagian | Lemah | Kuat |
 | --- | --- | --- |
-| Akar masalah | "Gambarnya berat" | "Flag `seller.dynamic-thumbnail` menyala; untuk tiap produk (sampai 60) aplikasi membuat gambar 1600 x 1600 hanya untuk membaca satu piksel. CPU aplikasi sampai 191,6%, database dua query di bawah 1 ms (p50 733,7 ms pada 1 req/detik)" |
+| Akar masalah | "Gambarnya berat" | "Flag `seller.dynamic-thumbnail` menyala; untuk tiap produk (sampai 60) aplikasi membuat gambar 1600 x 1600 hanya untuk membaca satu piksel. CPU aplikasi sampai 339,5% per core, database dua query di bawah 1 ms (p50 613 ms pada 1 req/detik)" |
 | Sinyal | Daftar tanpa alasan | Tabel kategori dengan alasan dan bukti per baris |
 | Batasan | "Sudah dipenuhi" | Tabel: batasan, berkas sumber, cara dipenuhi |
 | Alternatif | "Cache juga bisa" | Dua atau lebih alternatif, dengan alasan menolak yang merujuk batasan |
